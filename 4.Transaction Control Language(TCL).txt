@@ -1,0 +1,368 @@
+4.Transaction Control Language(TCL)
+   a)commit   b)rollback   c)savepoint
+
+a)commit:
+    commit is used to save the data or records in the table permenantly even after inserting,updating or deleting the records.
+
+   Once the table is commited,it can be saved automatically even after any performances are applied.
+
+How to commit the data?
+
+set AUTOCOMMIT=0;
+commit;
+
+
+b)rollback:
+    rollback is used to rollback the records which are pre-existing  in the selected table.
+
+   rollback is used in both commit and savepoint to rollback the table into original data structure.
+
+   Once the table is dropped,it cannot be rollback to its original position.
+
+   rollback is applicable only for DML statements likes insert,update,delete.
+
+Ex:1:Deleted records recovery by using commit and rollback,
+=====
+
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> delete from DML where sno=127;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
++------+--------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+Ex:2:Updating the record in the table,
+=====
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.01 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update DML set company="Hcl" where sno=567;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *  from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | Hcl     |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+Ex:3:inserting the record into the table,
+=====
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into DML values
+    -> (128,"rajesh",56000,"wipro");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
+|  128 | rajesh |  56000 | wipro   |
++------+--------+--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+c)savepoint:
+=============
+   savepoint is used to save the records in the table permenantly with a name known as savepoint.
+
+   The records in the table is saved permenanatly until the table is dropped or truncated.
+
+To save the records in the table permenantly using saving point,
+
+---> savepoint savepoint_name;
+
+
+To rollback the data,
+
+---> rollback to savepoint_name;
+
+Ex:1:deleting the records from the table
+=====
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> savepoint E1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delete from DML where sno=567;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from  DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> rollback to E1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+Ex:2:updating the record in the table,
+=====
+
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> savepoint E1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> update DML set sname="rajesh" where sno=127;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | rajesh |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> rollback to E1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+
+Ex:3:inserting the record into the table,
+====
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> savepoint E1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into DML values
+    -> (128,"ramesh",67000,"hcl");
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
+|  128 | ramesh |  67000 | hcl     |
++------+--------+--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> rollback to E1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  567 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+
+
+
+Difference b/w commit and savepoint:
+=======================================
+
+
+
+commit:
+=======
+
+setting:
+set AUTOCOMMIT=0;    // 0 means false
+commit;
+
+
+rollback:
+
+rollback;
+
+
+savepoint:
+===========
+
+setting:
+
+savepoint savepoint_name;
+
+rollback:
+
+rollback to savepoint_name;
+
+
