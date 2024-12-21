@@ -1,0 +1,286 @@
+2.Data Definition Language(DDL)
+   a)create    b)alter     c)rename   d)drop     e)truncate  
+
+a)create:
+     create is used to create the objects like databases,tables,triggers,procedures,etc.
+
+To create database,
+---> create database database_name;
+
+To create table,
+---> use database_name;
+---> create table table_name(Column1 Datatype,Column2 Datatype,Column3 Datatype);
+
+To create procedures,
+---> use database_name;
+---> create procedure procedure_name()
+
+To create views,
+---> use database_name;
+---> create view view_name as select column1,column2 from table_name;
+
+To create cursor,
+---> use database_name;
+---> create procedure procedure_name()
+---> DECLARE cursor_name CURSOR condition
+
+Ex:1:-
+=======
+mysql> use statements;
+Database changed
+mysql> create table data_defination_lang
+    -> (sno int,
+    -> sname varchar(50),
+    -> sal float,
+    -> company varchar(50));
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc data_defination_lang;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| sno     | int         | YES  |     | NULL    |       |
+| sname   | varchar(50) | YES  |     | NULL    |       |
+| sal     | float       | YES  |     | NULL    |       |
+| company | varchar(50) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+
+b)alter:
+    alter is used to change the structure of the table by adding or removing the column from the table.
+
+    alter can also change the constraints of the columns in the table.
+
+    alter can be used to modify the datatypes of the table.
+
+To add the column to the table,
+---> alter table table_name ADD Column_name DATATYPE
+
+To drop the column of the table,
+---> alter table table_name DROP column_name;
+
+To add the column at the beginning of the table,
+---> alter table table_name ADD Column_name DATATYPE FIRST;
+
+To add the column between the existing columns,
+---> alter table table_name ADD Column_name DATATYPE BEFORE|AFTER Existing Column;
+
+
+To rename the column name of the table,
+---> alter table table_name RENAME COLUMN old_column_name to new_column_name;
+
+
+Ex:1:To add the column to the table,
+======
+mysql> select * from statements;
++------+--------+-------+---------+-------+
+| sno  | name   | sal   | company | Id    |
++------+--------+-------+---------+-------+
+|  101 | koti   | 25000 | hcl     | 23456 |
+|  102 | naveen | 35000 | wipro   | 34567 |
+|  103 | nivas  | 20000 | gampact | 45678 |
++------+--------+-------+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table statements add experience varchar(50);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from statements;
++------+--------+-------+---------+-------+------------+
+| sno  | name   | sal   | company | Id    | experience |
++------+--------+-------+---------+-------+------------+
+|  101 | koti   | 25000 | hcl     | 23456 | NULL       |
+|  102 | naveen | 35000 | wipro   | 34567 | NULL       |
+|  103 | nivas  | 20000 | gampact | 45678 | NULL       |
++------+--------+-------+---------+-------+------------+
+3 rows in set (0.00 sec)
+
+Ex:2:To drop the column of the table,
+=====
+mysql> alter table statements DROP Id;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from statements;
++------+--------+-------+---------+------------+
+| sno  | name   | sal   | company | experience |
++------+--------+-------+---------+------------+
+|  101 | koti   | 25000 | hcl     | NULL       |
+|  102 | naveen | 35000 | wipro   | NULL       |
+|  103 | nivas  | 20000 | gampact | NULL       |
++------+--------+-------+---------+------------+
+3 rows in set (0.00 sec)
+
+
+Ex:3:To add the column at the beginning of the table,
+=====
+
+mysql> select * from statements;
++------+--------+-------+---------+------------+
+| sno  | name   | sal   | company | experience |
++------+--------+-------+---------+------------+
+|  101 | koti   | 25000 | hcl     | NULL       |
+|  102 | naveen | 35000 | wipro   | NULL       |
+|  103 | nivas  | 20000 | gampact | NULL       |
++------+--------+-------+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table statements add Eid int first;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from statements;
++------+------+--------+-------+---------+------------+
+| Eid  | sno  | name   | sal   | company | experience |
++------+------+--------+-------+---------+------------+
+| NULL |  101 | koti   | 25000 | hcl     | NULL       |
+| NULL |  102 | naveen | 35000 | wipro   | NULL       |
+| NULL |  103 | nivas  | 20000 | gampact | NULL       |
++------+------+--------+-------+---------+------------+
+3 rows in set (0.00 sec)
+
+EX:4:To add the column between the existing columns,
+=====
+
+mysql> select * from statements;
++------+------+--------+-------+---------+------------+
+| Eid  | sno  | name   | sal   | company | experience |
++------+------+--------+-------+---------+------------+
+| NULL |  101 | koti   | 25000 | hcl     | NULL       |
+| NULL |  102 | naveen | 35000 | wipro   | NULL       |
+| NULL |  103 | nivas  | 20000 | gampact | NULL       |
++------+------+--------+-------+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table statements add location varchar(50) after sal;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from statements;
++------+------+--------+-------+----------+---------+------------+
+| Eid  | sno  | name   | sal   | location | company | experience |
++------+------+--------+-------+----------+---------+------------+
+| NULL |  101 | koti   | 25000 | NULL     | hcl     | NULL       |
+| NULL |  102 | naveen | 35000 | NULL     | wipro   | NULL       |
+| NULL |  103 | nivas  | 20000 | NULL     | gampact | NULL       |
++------+------+--------+-------+----------+---------+------------+
+3 rows in set (0.00 sec)
+
+Ex:5:To rename the column name of the table,
+=====
+mysql> select * from statements;
++------+------+--------+-------+----------+---------+------------+
+| Eid  | sno  | name   | sal   | location | company | experience |
++------+------+--------+-------+----------+---------+------------+
+| NULL |  101 | koti   | 25000 | NULL     | hcl     | NULL       |
+| NULL |  102 | naveen | 35000 | NULL     | wipro   | NULL       |
+| NULL |  103 | nivas  | 20000 | NULL     | gampact | NULL       |
++------+------+--------+-------+----------+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table statements rename column sal to salary;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from statements;
++------+------+--------+--------+----------+---------+------------+
+| Eid  | sno  | name   | salary | location | company | experience |
++------+------+--------+--------+----------+---------+------------+
+| NULL |  101 | koti   |  25000 | NULL     | hcl     | NULL       |
+| NULL |  102 | naveen |  35000 | NULL     | wipro   | NULL       |
+| NULL |  103 | nivas  |  20000 | NULL     | gampact | NULL       |
++------+------+--------+--------+----------+---------+------------+
+3 rows in set (0.00 sec)
+
+
+c)rename:
+    rename is used to rename the object names like databases,tables,views,triggers,etc.
+
+To rename the database_name;
+---> RENAME Database Old_database_name to New_database_name;
+
+To rename the table;
+---> RENAME Table Old_Table_Name to New_Table_Name;
+
+Ex:1:To rename the table;
+
+mysql> rename table statements to DDL;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql>
+mysql> select * from DDL;
++------+------+--------+--------+----------+---------+------------+
+| Eid  | sno  | name   | salary | location | company | experience |
++------+------+--------+--------+----------+---------+------------+
+| NULL |  101 | koti   |  25000 | NULL     | hcl     | NULL       |
+| NULL |  102 | naveen |  35000 | NULL     | wipro   | NULL       |
+| NULL |  103 | nivas  |  20000 | NULL     | gampact | NULL       |
++------+------+--------+--------+----------+---------+------------+
+3 rows in set (0.01 sec)
+
+
+
+  d)drop
+       drop is used to drop the selected object like databases,tables,views,triggers,procedures,etc.
+
+     Once the object is dropped ,the complete structure will be vanished and the deleted object will moves to gc module.
+
+    By using some traditional methods,the dropped object can be rollback ,but it is very to difficult to rollback again.
+
+
+To drop the database,
+--> drop database database_name;
+
+To drop the table,
+--> drop table table_name;
+
+To drop views,
+--> drop view view_name;
+
+To drop procedure,
+--> drop procedure procedure_name;
+
+To drop triggers,
+--> drop trigger trigger_name;
+
+
+To drop the column from the table,
+---> alter table table_name
+     DROP column column_name;
+
+
+e)truncate:
+===========
+
+     truncate is used to empty the data or records in the table permenantly and it cannot be rollback again.
+
+    Even though truncate is applied to the table,the table structure will remains same.
+
+To truncate table,
+--> truncate table table_name;
+
+
+Question:
+=========
+
+Percendence of drop,delete,truncate:
+
+
+Ascending order ---> delete<drop<truncate
+
+Descending order ---> truncate>drop>delete
+
+Note:
+
+delete:  delete is used to delete the specific record or row from the table.
+
+
+drop: drop is used to drop the selected objects and moves to GC module,it is difficult to rollback again
+
+
+truncate: truncate is used to empty or vanish the complete records in the table permenantly and the data cannot be rollback again.
+
+
+
+
+
