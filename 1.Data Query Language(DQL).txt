@@ -1,0 +1,88 @@
+1.Data Query Language(DQL)
+   a)select
+
+     select is used to display the table or columns in the table.
+
+To display the complete table,
+  ---> select * from table_name;
+
+To dispaly the column from the table,
+  ---> select column_name from table_name;
+
+To display single record from the table,
+  ---> select * from table_name where condition;
+
+Ex:1:To display the complete table,
+======
+mysql> use statements;
+Database changed
+mysql> desc statements;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| sno     | int         | YES  |     | NULL    |       |
+| name    | varchar(50) | YES  |     | NULL    |       |
+| sal     | float       | YES  |     | NULL    |       |
+| company | varchar(50) | YES  |     | NULL    |       |
+| Id      | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.07 sec)
+
+mysql> insert into statements values
+    -> (101,"koti",25000,"hcl",23456),
+    -> (102,"naveen",35000,"wipro",34567),
+    -> (103,"nivas",20000,"gampact",45678);
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from statements;
++------+--------+-------+---------+-------+
+| sno  | name   | sal   | company | Id    |
++------+--------+-------+---------+-------+
+|  101 | koti   | 25000 | hcl     | 23456 |
+|  102 | naveen | 35000 | wipro   | 34567 |
+|  103 | nivas  | 20000 | gampact | 45678 |
++------+--------+-------+---------+-------+
+3 rows in set (0.00 sec)
+
+Ex:2:-To dispaly the column from the table,
+=====
+
+mysql> select sal from statements;
++-------+
+| sal   |
++-------+
+| 25000 |
+| 35000 |
+| 20000 |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select name,company from statements;
++--------+---------+
+| name   | company |
++--------+---------+
+| koti   | hcl     |
+| naveen | wipro   |
+| nivas  | gampact |
++--------+---------+
+3 rows in set (0.00 sec)
+
+Ex:3:To display single record from the table,
+======
+
+mysql> select * from statements where sno=101;
++------+------+-------+---------+-------+
+| sno  | name | sal   | company | Id    |
++------+------+-------+---------+-------+
+|  101 | koti | 25000 | hcl     | 23456 |
++------+------+-------+---------+-------+
+1 row in set (0.01 sec)
+
+mysql> select * from statements where sno=102;
++------+--------+-------+---------+-------+
+| sno  | name   | sal   | company | Id    |
++------+--------+-------+---------+-------+
+|  102 | naveen | 35000 | wipro   | 34567 |
++------+--------+-------+---------+-------+
+1 row in set (0.00 sec)
