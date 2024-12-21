@@ -1,0 +1,74 @@
+5.Data Control Language(DCL)
+   a)grant    b)revoke
+
+
+a)grant:
+     grant is used to grant the permissions from user to another user through users and priveleges.
+
+ 
+grant select,insert,update(required priveleges) on table_name to username;
+
+
+b)revoke:
+   revoke is used to withdraw the permissions from the user which are granted in grant through Users and priveleges.
+
+revoke select,insert,update(required priveleges) on table_name from username;
+
+
+How to create new user in MySQL workbench?
+
+1.Open MySQL workbench
+2.Click on the root and login to the MySQL interface 
+3.Click on Server,select Users and Priveleges,a new dialogue box appears
+4.Click on Add Account
+5.Enter the desired Username,password and confirm password
+6.Click on Apply
+
+
+username888
+user@888
+
+
+Examples on  grant and revoke:
+================================
+
+Ex1:
+In MySQL workbench,create the newuser as mentioned above.
+
+In root user,
+
+use statements;
+
+grant select on edata to username888;
+
+
+In username888,
+
+mysql> select * from edata;
++------+--------+--------+-----------+-----------+------------------+
+| Eid  | Ename  | Salary | Location  | Company   | Designation      |
++------+--------+--------+-----------+-----------+------------------+
+| 1111 | Arun   |  76000 | Mysore    | IBM       | Python Developer |
+| 1112 | Balu   |  65000 | Lucknow   | Google    | Java Developer   |
+| 1113 | Charan |  54000 | Pune      | Accenture | MLOP Developer   |
+| 1114 | Divya  |  50000 | Kolkata   | TCS       | Data Engineer    |
+| 1115 | Eswar  |  62000 | Hyderabad | Wipro     | Data Scientist   |
+| 1116 | Feroz  |  45000 | Mumbai    | Capgemini | .net developer   |
++------+--------+--------+-----------+-----------+------------------+
+6 rows in set (0.00 sec)
+
+
+Ex2:
+
+In root user,
+
+revoke select on edata from username888;
+
+
+In username888,
+
+use statements;
+select * from edata;
+
+select command denied to username888%localhost
+
