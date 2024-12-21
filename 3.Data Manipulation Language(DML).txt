@@ -1,0 +1,318 @@
+3.Data Manipulation Language(DML)
+   a)insert    b)update    c)delete
+
+a)insert:
+    insert is used to insert the new records only into the table
+
+
+
+To insert the records into the table,
+---> insert into table_name values (value1,value2,value3)
+
+
+To insert the alternate records into the table,
+---> insert into table_name(column1,column3,column5) values (value1,value3,value5);
+
+Ex:1:To insert the records into the table,
+=====
+mysql> create table DMl
+    -> (sno int,
+    -> sname varchar(50),
+    -> salary float);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into DML values
+    -> (123,"kotesh",34000),
+    -> (124,"naveen",30000),
+    -> (125,"nivas",25000);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from DML;
++------+--------+--------+
+| sno  | sname  | salary |
++------+--------+--------+
+|  123 | kotesh |  34000 |
+|  124 | naveen |  30000 |
+|  125 | nivas  |  25000 |
++------+--------+--------+
+3 rows in set (0.00 sec)
+
+Ex:2
+=====
+mysql> insert into DML values(126,"ramesh",20000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from DML;
++------+--------+--------+
+| sno  | sname  | salary |
++------+--------+--------+
+|  123 | kotesh |  34000 |
+|  124 | naveen |  30000 |
+|  125 | nivas  |  25000 |
+|  126 | ramesh |  20000 |
++------+--------+--------+
+4 rows in set (0.00 sec)
+
+Ex:3:To insert the alternate records into the table,
+=====
+
+mysql> insert into DML (sno,sname,salary) values (127,"king",45000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from DML;
++------+--------+--------+
+| sno  | sname  | salary |
++------+--------+--------+
+|  123 | kotesh |  34000 |
+|  124 | naveen |  30000 |
+|  125 | nivas  |  25000 |
+|  126 | ramesh |  20000 |
+|  127 | king   |  45000 |
++------+--------+--------+
+5 rows in set (0.00 sec)
+
+b)update:
+
+     update is used to modify or change or edit the existing or old records only.
+
+     The records in the table with Null can be changed only with update.
+
+     where clause is mandatory while working with update or else it will influence the entire column.
+
+To update the records in the table,
+
+update table_name set Column_name=value where condition;
+
+
+update multiple records in a table,
+
+update table_name set Column1=value1,column2=value2,column3=value3 where condition;
+
+
+Ex:1:To update the records in the table,
+====
+mysql> select * from DML;
++------+--------+--------+
+| sno  | sname  | salary |
++------+--------+--------+
+|  123 | kotesh |  34000 |
+|  124 | naveen |  30000 |
+|  125 | nivas  |  25000 |
+|  126 | ramesh |  20000 |
+|  127 | king   |  45000 |
++------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> update DML set sname="ravi" where sno=127;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from DML;
++------+--------+--------+
+| sno  | sname  | salary |
++------+--------+--------+
+|  123 | kotesh |  34000 |
+|  124 | naveen |  30000 |
+|  125 | nivas  |  25000 |
+|  126 | ramesh |  20000 |
+|  127 | ravi   |  45000 |
++------+--------+--------+
+5 rows in set (0.00 sec)
+
+
+
+Ex:2:to add values into the null values,
+
+mysql> alter table DML add company varchar(50);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | NULL    |
+|  124 | naveen |  30000 | NULL    |
+|  125 | nivas  |  25000 | NULL    |
+|  126 | ram    |  27000 | NULL    |
+|  127 | ravi   |  45000 | NULL    |
++------+--------+--------+---------+
+5 rows in set (0.01 sec)
+
+mysql> update DML set company="wipro" where sno=123;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | NULL    |
+|  125 | nivas  |  25000 | NULL    |
+|  126 | ram    |  27000 | NULL    |
+|  127 | ravi   |  45000 | NULL    |
++------+--------+--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> update DML set company="wipro" where sno=124;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update DML set company="wipro" where sno=125;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update DML set company="wipro" where sno=126;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update DML set company="wipro" where sno=127;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  126 | ram    |  27000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+5 rows in set (0.00 sec)
+
+
+Ex:3:update multiple records in a table,
+=====
+mysql> select * from DML;
++------+--------+--------+
+| sno  | sname  | salary |
++------+--------+--------+
+|  123 | kotesh |  34000 |
+|  124 | naveen |  30000 |
+|  125 | nivas  |  25000 |
+|  126 | ramesh |  20000 |
+|  127 | ravi   |  45000 |
++------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql>  update DML set sname="ram",salary=27000 where sno=126;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from DML;
++------+--------+--------+
+| sno  | sname  | salary |
++------+--------+--------+
+|  123 | kotesh |  34000 |
+|  124 | naveen |  30000 |
+|  125 | nivas  |  25000 |
+|  126 | ram    |  27000 |
+|  127 | ravi   |  45000 |
++------+--------+--------+
+5 rows in set (0.00 sec)
+
+c)delete:
+     delete is used to delete the records from the table with where clause or else it will compltely delets the entire table.
+
+    If the data is commited,then it can be rollback to its original position in delete.
+
+
+To delete the records from the table,
+---> delete from table_name where column_name=value;
+
+To delete the record in MySQL workbench,
+---> delete from table_name where column_name=value limit 1;
+
+Ex:1:To delete the records from the table,
+=====
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  126 | ram    |  27000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> delete from DML where sno=126;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+
+Ex:2:Deleted records recovery by using commit and rollback,
+=====
+
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> delete from DML where sno=127;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
++------+--------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from DML;
++------+--------+--------+---------+
+| sno  | sname  | salary | company |
++------+--------+--------+---------+
+|  123 | kotesh |  34000 | wipro   |
+|  124 | naveen |  30000 | wipro   |
+|  125 | nivas  |  25000 | wipro   |
+|  127 | ravi   |  45000 | wipro   |
++------+--------+--------+---------+
+4 rows in set (0.00 sec)
+
+
