@@ -1,0 +1,240 @@
+Examples on datatypes
+====================
+1.varchar(n):
+===========
+
+mysql> create database datatype;
+Query OK, 1 row affected (0.07 sec)
+
+mysql> use datatype;
+Database changed
+mysql> create table students_weight
+    -> (sno int,
+    -> sname varchar(50),
+    -> weight float);
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc students_weight;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| sno    | int         | YES  |     | NULL    |       |
+| sname  | varchar(50) | YES  |     | NULL    |       |
+| weight | float       | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.05 sec)
+
+mysql> insert into students_weight values
+    -> (1,"koti",78.392342),
+    -> (2,"naveen",65.39245),
+    -> (3,"nivas",82.49328);
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from students_weight;
++------+--------+---------+
+| sno  | sname  | weight  |
++------+--------+---------+
+|    1 | koti   | 78.3923 |
+|    2 | naveen | 65.3924 |
+|    3 | nivas  | 82.4933 |
++------+--------+---------+
+3 rows in set (0.01 sec)
+
+2.char(n):
+===========
+
+
+mysql> create table bikes
+    -> (sno int,
+    -> name char(50),
+    -> colour char(50));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc bikes;
++--------+----------+------+-----+---------+-------+
+| Field  | Type     | Null | Key | Default | Extra |
++--------+----------+------+-----+---------+-------+
+| sno    | int      | YES  |     | NULL    |       |
+| name   | char(50) | YES  |     | NULL    |       |
+| colour | char(50) | YES  |     | NULL    |       |
++--------+----------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into bikes values
+    -> (1,"honda","black"),
+    -> (2,"royal","grey"),
+    -> (3,"pulsar","red");
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from bikes;
++------+--------+--------+
+| sno  | name   | colour |
++------+--------+--------+
+|    1 | honda  | black  |
+|    2 | royal  | grey   |
+|    3 | pulsar | red    |
++------+--------+--------+
+3 rows in set (0.00 sec)
+
+
+3.Decimal(T,D):
+===============
+
+mysql> create table students_heights
+    -> (sno int,
+    -> sname varchar(50),
+    -> height decimal(5,2));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc students_heights;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| sno    | int          | YES  |     | NULL    |       |
+| sname  | varchar(50)  | YES  |     | NULL    |       |
+| height | decimal(5,2) | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into students_heights values
+    -> (11,"kotesh",167.34),
+    -> (12,"navveen",172.23),
+    -> (13,"nivas",140.22);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from students_heights;
++------+---------+--------+
+| sno  | sname   | height |
++------+---------+--------+
+|   11 | kotesh  | 167.34 |
+|   12 | navveen | 172.23 |
+|   13 | nivas   | 140.22 |
++------+---------+--------+
+3 rows in set (0.00 sec)
+
+
+4.Date:
+=======
+
+mysql> desc festivals;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| sno   | int         | YES  |     | NULL    |       |
+| fname | varchar(50) | YES  |     | NULL    |       |
+| date  | date        | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> insert into festivals values
+    -> (1,"independence day","2025-8-15"),
+    -> (2,"republic day","2025-1-26"),
+    -> (3,"maths dat","2025-12-22");
+Query OK, 3 rows affected (0.02 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from festivals;
++------+------------------+------------+
+| sno  | fname            | date       |
++------+------------------+------------+
+|    1 | independence day | 2025-08-15 |
+|    2 | republic day     | 2025-01-26 |
+|    3 | maths day       | 2025-12-22 |
++------+------------------+------------+
+3 rows in set (0.00 sec)
+
+
+5.DateTime:
+=========
+mysql> create table events
+    -> (sno int,
+    -> event_name varchar(50),
+    -> date_of_event date,
+    -> time_of_event time,
+    -> datetime_of_event datetime);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc events;
++-------------------+-------------+------+-----+---------+-------+
+| Field             | Type        | Null | Key | Default | Extra |
++-------------------+-------------+------+-----+---------+-------+
+| sno               | int         | YES  |     | NULL    |       |
+| event_name        | varchar(50) | YES  |     | NULL    |       |
+| date_of_event     | date        | YES  |     | NULL    |       |
+| time_of_event     | time        | YES  |     | NULL    |       |
+| datetime_of_event | datetime    | YES  |     | NULL    |       |
++-------------------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+mysql>  insert into events values
+    -> (111,"marriage","2024-11-20","20:00:00","2024-11-20 20:00:00"),
+    -> (112,"birthday","2024-6-10","12:02:22","2024-6-10 12:02:22");
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from events;
++------+------------+---------------+---------------+---------------------+
+| sno  | event_name | date_of_event | time_of_event | datetime_of_event   |
++------+------------+---------------+---------------+---------------------+
+|  111 | marriage   | 2024-11-20    | 20:00:00      | 2024-11-20 20:00:00 |
+|  112 | birthday   | 2024-06-10    | 12:02:22      | 2024-06-10 12:02:22 |
++------+------------+---------------+---------------+---------------------+
+2 rows in set (0.00 sec)
+
+6.convert time into 12hrs format and date in general format:
+==========================================================
+
+mysql> select * from events;
++------+------------+---------------+---------------+---------------------+
+| sno  | event_name | date_of_event | time_of_event | datetime_of_event   |
++------+------------+---------------+---------------+---------------------+
+|  111 | marriage   | 2024-11-20    | 20:00:00      | 2024-11-20 20:00:00 |
+|  112 | birthday   | 2024-06-10    | 12:02:22      | 2024-06-10 12:02:22 |
++------+------------+---------------+---------------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> select datetime_of_event,date_format(datetime_of_event,"%y-%m-%d %h:%i:%s %p") from events;
++---------------------+-------------------------------------------------------+
+| datetime_of_event   | date_format(datetime_of_event,"%y-%m-%d %h:%i:%s %p") |
++---------------------+-------------------------------------------------------+
+| 2024-11-20 20:00:00 | 24-11-20 08:00:00 PM                                  |
+| 2024-06-10 12:02:22 | 24-06-10 12:02:22 PM                                  |
++---------------------+-------------------------------------------------------+
+2 rows in set (0.01 sec)
+
+Ex:7:-To Upload Images
+======================
+
+mysql> create table image_table
+    -> (sno int,
+    -> image_name varchar(50),
+    -> image_path blob);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc image_table;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| sno        | int         | YES  |     | NULL    |       |
+| image_name | varchar(50) | YES  |     | NULL    |       |
+| image_path | blob        | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.04 sec)
+
+mysql> insert into image_table values
+    -> (1,"koti","C:\Users\kotir\OneDrive\Pictures\new.jpg");
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from image_table;
++------+------------+--------------------------------------------------------------------------+
+| sno  | image_name | image_path                                                               |
++------+------------+--------------------------------------------------------------------------+
+|    1 | koti       | 0x433A55736572736B6F7469724F6E65447269766550696374757265730A65772E6A7067 |
++------+------------+--------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+
+
+
