@@ -1,0 +1,463 @@
+Aggregates in MySQL:
+======================
+
+Aggregates are the functions which are used to perform analytical calculations.Aggregates are pre-built functions which are used to perform the calculation as per the application requirement.
+
+Aggregates are classified as follows:
+a)max()
+b)min()
+c)sum()
+d)avg()
+e)count()
+f)concat()
+
+a)max():
+    max() is used to return the maximum value from the selected column.
+
+select max(column_name) from table_name;
+
+
+b)min():
+    min() is used to return the minimum value from the selected column.
+
+select min(column_name) from table_name;
+
+
+c)sum():
+    sum() is used to add all the values in the selected column and returns the result.
+
+select sum(column_name) from table_name;
+
+
+d)avg():
+    avg() is used to find the average values of the selected column
+
+select avg(column_name) from table_name;
+
+
+e)count():
+    count() is used to find the number of records within the selected column ,group by clause have to be used while working with count().
+
+
+select count(column_name) from table_name;
+
+select count(column_name) from table_name group by column_name;
+
+
+f)concat():
+    concat() is used to join two or more than two columns and returns as single column.
+
+select concat(column1,column2) from table_name;
+
+
+
+Examples on aggregates:
+========================
+mysql> use aggregates;
+Database changed
+mysql> create table aggregates
+    -> (sno int,
+    -> f_name varchar(50),
+    -> l_name varchar(50),
+    -> class int,
+    -> marks float,
+    -> country varchar(50));
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> desc aggregates;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| sno     | int         | YES  |     | NULL    |       |
+| f_name  | varchar(50) | YES  |     | NULL    |       |
+| l_name  | varchar(50) | YES  |     | NULL    |       |
+| class   | int         | YES  |     | NULL    |       |
+| marks   | float       | YES  |     | NULL    |       |
+| country | varchar(50) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.02 sec)
+
+mysql> insert into aggregates values
+    -> (1,"koti","reddy",9,564,"india"),
+    -> (2,"naveen","kumar",8,550,"aus"),
+    -> (3,"narru","nivas",7,500,"nz"),
+    -> (4,"virat","kohli",6,560,"sa"),
+    -> (5,"rohit","sharma",5,570,"india"),
+    -> (6,"ms","dhoni",4,580,"india");
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from  aggregates;
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    1 | koti   | reddy  |     9 |   564 | india   |
+|    2 | naveen | kumar  |     8 |   550 | aus     |
+|    3 | narru  | nivas  |     7 |   500 | nz      |
+|    4 | virat  | kohli  |     6 |   560 | sa      |
+|    5 | rohit  | sharma |     5 |   570 | india   |
+|    6 | ms     | dhoni  |     4 |   580 | india   |
++------+--------+--------+-------+-------+---------+
+6 rows in set (0.00 sec)
+
+Ex1:Max():
+=========
+mysql> select * from  aggregates;
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    1 | koti   | reddy  |     9 |   564 | india   |
+|    2 | naveen | kumar  |     8 |   550 | aus     |
+|    3 | narru  | nivas  |     7 |   500 | nz      |
+|    4 | virat  | kohli  |     6 |   560 | sa      |
+|    5 | rohit  | sharma |     5 |   570 | india   |
+|    6 | ms     | dhoni  |     4 |   580 | india   |
++------+--------+--------+-------+-------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select max(marks) from aggregates;
++------------+
+| max(marks) |
++------------+
+|        580 |
++------------+
+1 row in set (0.02 sec)
+
+mysql> select * from aggregates where marks=(select max(marks) from aggregates);
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    6 | ms     | dhoni  |     4 |   580 | india   |
++------+--------+--------+-------+-------+---------+
+1 row in set (0.01 sec)
+
+mysql> select l_name,marks from aggregates where marks=(select max(marks) from aggregates);
++--------+-------+
+| l_name | marks |
++--------+-------+
+| dhoni  |   580 |
++--------+-------+
+1 row in set (0.00 sec)
+
+
+Ex:2:Min():
+=====
+mysql> select * from aggregates;
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    1 | koti   | reddy  |     9 |   564 | india   |
+|    2 | naveen | kumar  |     8 |   550 | aus     |
+|    3 | narru  | nivas  |     7 |   500 | nz      |
+|    4 | virat  | kohli  |     6 |   560 | sa      |
+|    5 | rohit  | sharma |     5 |   570 | india   |
+|    6 | ms     | dhoni  |     4 |   580 | india   |
++------+--------+--------+-------+-------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select min(marks) from aggregates;
++------------+
+| min(marks) |
++------------+
+|        500 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select * from aggregates where marks=(select min(marks) from aggregates);
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    3 | narru  | nivas  |     7 |   500 | nz      |
++------+--------+--------+-------+-------+---------+
+1 row in set (0.00 sec)
+
+mysql> select l_name,marks from aggregates where marks=(select min(marks) from aggregates);
++--------+-------+
+| l_name | marks |
++--------+-------+
+| nivas  |   500 |
++--------+-------+
+1 row in set (0.00 sec)
+
+
+Ex:3:Sum():
+====
+
+mysql> select * from aggregates;
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    1 | koti   | reddy  |     9 |   564 | india   |
+|    2 | naveen | kumar  |     8 |   550 | aus     |
+|    3 | narru  | nivas  |     7 |   500 | nz      |
+|    4 | virat  | kohli  |     6 |   560 | sa      |
+|    5 | rohit  | sharma |     5 |   570 | india   |
+|    6 | ms     | dhoni  |     4 |   580 | india   |
++------+--------+--------+-------+-------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select sum(marks) from aggregates;
++------------+
+| sum(marks) |
++------------+
+|       3324 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(marks) as total_marks from aggregates;
++-------------+
+| total_marks |
++-------------+
+|        3324 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(marks) as total_marks from aggregates where country="india";
++-------------+
+| total_marks |
++-------------+
+|        1714 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select sum(marks) as forgin_country from aggregates where not country="india";
++----------------+
+| forgin_country |
++----------------+
+|           1610 |
++----------------+
+1 row in set (0.00 sec)
+
+
+Ex:4:Avg():
+===
+mysql> select * from aggregates;
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    1 | koti   | reddy  |     9 |   564 | india   |
+|    2 | naveen | kumar  |     8 |   550 | aus     |
+|    3 | narru  | nivas  |     7 |   500 | nz      |
+|    4 | virat  | kohli  |     6 |   560 | sa      |
+|    5 | rohit  | sharma |     5 |   570 | india   |
+|    6 | ms     | dhoni  |     4 |   580 | india   |
++------+--------+--------+-------+-------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select avg(marks) from aggregates;
++------------+
+| avg(marks) |
++------------+
+|        554 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> select avg(marks) as average_marks from aggregates;
++---------------+
+| average_marks |
++---------------+
+|           554 |
++---------------+
+1 row in set (0.00 sec)
+
+Ex:5:Count():
+===
+mysql> select count(country) from aggregates;
++----------------+
+| count(country) |
++----------------+
+|              6 |
++----------------+
+1 row in set (0.01 sec)
+
+mysql> select country,count(country) from aggregates group by country;
++---------+----------------+
+| country | count(country) |
++---------+----------------+
+| india   |              3 |
+| aus     |              1 |
+| nz      |              1 |
+| sa      |              1 |
++---------+----------------+
+4 rows in set (0.01 sec)
+
+Ex:6:Concat():
+===
+mysql> select * from aggregates;
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    1 | koti   | reddy  |     9 |   564 | india   |
+|    2 | naveen | kumar  |     8 |   550 | aus     |
+|    3 | narru  | nivas  |     7 |   500 | nz      |
+|    4 | virat  | kohli  |     6 |   560 | sa      |
+|    5 | rohit  | sharma |     5 |   570 | india   |
+|    6 | ms     | dhoni  |     4 |   580 | india   |
++------+--------+--------+-------+-------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select concat(f_name,l_name) from aggregates;
++-----------------------+
+| concat(f_name,l_name) |
++-----------------------+
+| kotireddy             |
+| naveenkumar           |
+| narrunivas            |
+| viratkohli            |
+| rohitsharma           |
+| msdhoni               |
++-----------------------+
+6 rows in set (0.01 sec)
+
+mysql> select concat(f_name,l_name) as fullname from aggregates;
++-------------+
+| fullname    |
++-------------+
+| kotireddy   |
+| naveenkumar |
+| narrunivas  |
+| viratkohli  |
+| rohitsharma |
+| msdhoni     |
++-------------+
+6 rows in set (0.00 sec)
+
+
+
+Finding 2nd,3rd maximum and minimum records from the table without using limit:
+==============================================================================
+
+Ex1:To find the 2nd maximum record from the table,
+===
+
+mysql>  select * from aggregates;
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    1 | koti   | reddy  |     9 |   564 | india   |
+|    2 | naveen | kumar  |     8 |   550 | aus     |
+|    3 | narru  | nivas  |     7 |   500 | nz      |
+|    4 | virat  | kohli  |     6 |   560 | sa      |
+|    5 | rohit  | sharma |     5 |   570 | india   |
+|    6 | ms     | dhoni  |     4 |   580 | india   |
++------+--------+--------+-------+-------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select max(marks) from aggregates where marks<(select max(marks) from aggregates);
++------------+
+| max(marks) |
++------------+
+|        570 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> select * from aggregates where marks=( select max(marks) from aggregates where marks<(select max(marks) from aggregates));
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    5 | rohit  | sharma |     5 |   570 | india   |
++------+--------+--------+-------+-------+---------+
+1 row in set (0.01 sec)
+
+
+
+Ex2:To find the 3rd maximum,
+===
+mysql>  select * from aggregates;
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    1 | koti   | reddy  |     9 |   564 | india   |
+|    2 | naveen | kumar  |     8 |   550 | aus     |
+|    3 | narru  | nivas  |     7 |   500 | nz      |
+|    4 | virat  | kohli  |     6 |   560 | sa      |
+|    5 | rohit  | sharma |     5 |   570 | india   |
+|    6 | ms     | dhoni  |     4 |   580 | india   |
++------+--------+--------+-------+-------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select max(marks) from aggregates where marks<(select max(marks) from aggregates where marks<(select max(marks) from aggregates));
++------------+
+| max(marks) |
++------------+
+|        564 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> select * from aggregates where marks=(select max(marks) from aggregates where marks<(select max(marks) from aggregates where marks<(select max(marks) from aggregates)));
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    1 | koti   | reddy  |     9 |   564 | india   |
++------+--------+--------+-------+-------+---------+
+1 row in set (0.00 sec)
+
+
+
+To find the 2nd minimum and 3rd minimum,
+=======================================
+
+Ex:1: find the 2nd minimum
+====
+mysql>  select * from aggregates;
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    1 | koti   | reddy  |     9 |   564 | india   |
+|    2 | naveen | kumar  |     8 |   550 | aus     |
+|    3 | narru  | nivas  |     7 |   500 | nz      |
+|    4 | virat  | kohli  |     6 |   560 | sa      |
+|    5 | rohit  | sharma |     5 |   570 | india   |
+|    6 | ms     | dhoni  |     4 |   580 | india   |
++------+--------+--------+-------+-------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select min(marks) from aggregates where marks>(select min(marks) from aggregates where marks);
++------------+
+| min(marks) |
++------------+
+|        550 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select * from aggregates where marks=(select min(marks) from aggregates where marks>(select min(marks) from aggregates where marks));
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    2 | naveen | kumar  |     8 |   550 | aus     |
++------+--------+--------+-------+-------+---------+
+1 row in set (0.00 sec)
+
+
+Ex:2:find the 3rd minimum 
+====
+mysql>  select * from aggregates;
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    1 | koti   | reddy  |     9 |   564 | india   |
+|    2 | naveen | kumar  |     8 |   550 | aus     |
+|    3 | narru  | nivas  |     7 |   500 | nz      |
+|    4 | virat  | kohli  |     6 |   560 | sa      |
+|    5 | rohit  | sharma |     5 |   570 | india   |
+|    6 | ms     | dhoni  |     4 |   580 | india   |
++------+--------+--------+-------+-------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select min(marks) from aggregates where marks>(select min(marks) from aggregates where marks>(select min(marks) from aggregates));
++------------+
+| min(marks) |
++------------+
+|        560 |
++------------+
+1 row in set (0.00 sec)
+
+mysql>  select * from aggregates where marks=(select min(marks) from aggregates where marks>(select min(marks) from aggregates where marks>(select min(marks
+) from aggregates)));
++------+--------+--------+-------+-------+---------+
+| sno  | f_name | l_name | class | marks | country |
++------+--------+--------+-------+-------+---------+
+|    4 | virat  | kohli  |     6 |   560 | sa      |
++------+--------+--------+-------+-------+---------+
+1 row in set (0.00 sec)
+
