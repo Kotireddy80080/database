@@ -1,0 +1,97 @@
+Pre-defined functions in MySQL:
+=================================
+
+Absolute difference(~):
+   It is always used to deduct the least value from the highest value.
+
+ABS(column1-column2)
+
+
+45-75 = -30
+ABS(45-75) = 30      |-45| = 45
+
+25~85 = 60
+55~30 = 25
+
+
+Joins:
+    Joins is used to join the two tables and returns as single table with the common references and uncommon references.
+
+consider two tables as t1 and t2,
+
+select t1.column1,t1.column2,t2.column2,t2.column2 from t1 INNER JOIN | JOIN t2 on t1.column1=t2.column1;
+
+EX:
+=====
+
+
+mysql> select * from production;
++------+-----------------+----------+
+| sno  | field           | amount   |
++------+-----------------+----------+
+|    1 | grocery         |   876000 |
+|    2 | home appliances | 32780000 |
+|    3 | clothing        |  1254000 |
++------+-----------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from sales;
++------+-----------------+---------+
+| sno  | field           | amount  |
++------+-----------------+---------+
+|    1 | grocery         | 1056300 |
+|    2 | home appliances | 3845300 |
+|    3 | amount          | 1834000 |
++------+-----------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from production inner join sales on production.sno=sales.sno;
++------+-----------------+----------+------+-----------------+---------+
+| sno  | field           | amount   | sno  | field           | amount  |
++------+-----------------+----------+------+-----------------+---------+
+|    1 | grocery         |   876000 |    1 | grocery         | 1056300 |
+|    2 | home appliances | 32780000 |    2 | home appliances | 3845300 |
+|    3 | clothing        |  1254000 |    3 | amount          | 1834000 |
++------+-----------------+----------+------+-----------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from production p inner join sales s on p.sno=s.sno;
++------+-----------------+----------+------+-----------------+---------+
+| sno  | field           | amount   | sno  | field           | amount  |
++------+-----------------+----------+------+-----------------+---------+
+|    1 | grocery         |   876000 |    1 | grocery         | 1056300 |
+|    2 | home appliances | 32780000 |    2 | home appliances | 3845300 |
+|    3 | clothing        |  1254000 |    3 | amount          | 1834000 |
++------+-----------------+----------+------+-----------------+---------+
+3 rows in set (0.00 sec)
+
+
+CASE:
+=====
+
+  CASE in MySQL is used to access each and every value of the selected records in the table.
+
+CASE
+WHEN condition THEN condition
+else
+
+
+Ex:1
+=====
+
+mysql> select P.Field,
+    -> CASE
+    -> WHEN P.amount<S.amount THEN "Profit"
+    -> else "Loss" end as Profit_or_Loss,
+    -> ABS(p.amount-s.amount) as Amount_Difference
+    -> from Production P
+    -> Join Sales S
+    -> on P.Sno=S.Sno;
++-----------------+----------------+-------------------+
+| Field           | Profit_or_Loss | Amount_Difference |
++-----------------+----------------+-------------------+
+| Grocery         | Profit         |            180300 |
+| Home appliances | Profit         |            567300 |
+| Clothing        | Profit         |            580000 |
++-----------------+----------------+-------------------+
+3 rows in set (0.01 sec)
