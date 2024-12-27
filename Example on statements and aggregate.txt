@@ -1,0 +1,375 @@
+Example on statements and aggregates:
+=======================================
+
+Ex1:
+
+Create a table for student of 6 subjects and find the total marks and percentage of each individual student.
+
+
+Sol:
+
+(Total_marks/600) * 100
+
+Total_marks
+============ x 100        = Total_marks x 1/6 =Total_marks/6
+   600
+
+
+mysql> create table student_marks
+    -> (sno int,
+    -> name varchar(50),
+    -> telugu int,
+    -> hindi int,
+    -> maths int,
+    -> english int,
+    -> science int,
+    -> social int);
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc student_marks;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| sno     | int         | YES  |     | NULL    |       |
+| name    | varchar(50) | YES  |     | NULL    |       |
+| telugu  | int         | YES  |     | NULL    |       |
+| hindi   | int         | YES  |     | NULL    |       |
+| maths   | int         | YES  |     | NULL    |       |
+| english | int         | YES  |     | NULL    |       |
+| science | int         | YES  |     | NULL    |       |
+| social  | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+8 rows in set (0.02 sec)
+
+mysql> insert into student_marks values
+    -> (1,"kotesh",99,89,87,73,77,88),
+    -> (2,"naveen",77,88,66,82,71,57),
+    -> (3,"nivas",58,99,55,74,65,99),
+    -> (4,"raju",88,66,55,88,52,88),
+    -> (5,"ram",58,66,52,85,22,85);
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+
+| sno  | name   | telugu | hindi | maths | english | science | social |
++------+--------+--------+-------+-------+---------+---------+--------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |
++------+--------+--------+-------+-------+---------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> alter table student_marks add total_marks int;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |        NULL |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |        NULL |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |        NULL |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |        NULL |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |        NULL |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> update student_marks set total_marks=telugu+hindi+maths+english+science+social where sno=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student_marks set total_marks=telugu+hindi+maths+english+science+social where sno=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student_marks set total_marks=telugu+hindi+maths+english+science+social where sno=3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student_marks set total_marks=telugu+hindi+maths+english+science+social where sno=4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student_marks set total_marks=telugu+hindi+maths+english+science+social where sno=5;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table student_marks add percentage float;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |       NULL |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       NULL |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |       NULL |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |       NULL |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |       NULL |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> update student_marks set percentage =(total_marks/6) where sno=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student_marks set percentage =(total_marks/6) where sno=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student_marks set percentage =(total_marks/6) where sno=3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student_marks set percentage =(total_marks/6) where sno=4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student_marks set percentage =(total_marks/6) where sno=5;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |       85.5 |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |    61.3333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+5 rows in set (0.01 sec)
+
+
+Ex1:
+
+Create a table to find the profit or loss earned by Dmart on the following fields with the given data:
+
+On production,
+
+grocery ----> Rs 876000/-
+home appliances ----> Rs 3278000/-
+clothing ------> Rs 1254000/-
+
+
+On sales,
+
+grocery ---->  Rs 1056300/-
+home appliances ----> Rs 3845300/-
+clothing ----> Rs 1834000/-
+
+sal:
+====
+
+
+mysql> create database dmart;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use dmart;
+Database changed
+mysql> create table production
+    -> (sno int,
+    -> field varchar(50),
+    -> amount float);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc production;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| sno    | int         | YES  |     | NULL    |       |
+| field  | varchar(50) | YES  |     | NULL    |       |
+| amount | float       | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into production values
+    -> (1,"grocery",876000),
+    -> (2,"home appliances",32780000),
+    -> (3,"clothing",1254000);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from production;
++------+-----------------+----------+
+| sno  | field           | amount   |
++------+-----------------+----------+
+|    1 | grocery         |   876000 |
+|    2 | home appliances | 32780000 |
+|    3 | clothing        |  1254000 |
++------+-----------------+----------+
+3 rows in set (0.01 sec)
+
+mysql> create table sales
+    -> (sno int,
+    -> field varchar(50),
+    -> amount float);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc sales;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| sno    | int         | YES  |     | NULL    |       |
+| field  | varchar(50) | YES  |     | NULL    |       |
+| amount | float       | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into sales values
+    -> (1,"grocery",1056300),
+    -> (2,"home appliances",3845300),
+    -> (3,"amount",1834000);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from sales;
++------+-----------------+---------+
+| sno  | field           | amount  |
++------+-----------------+---------+
+|    1 | grocery         | 1056300 |
+|    2 | home appliances | 3845300 |
+|    3 | amount          | 1834000 |
++------+-----------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> create table sales_status
+    -> (sno int,
+    -> field varchar(50),
+    -> amount float);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc sales_status;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| sno    | int         | YES  |     | NULL    |       |
+| field  | varchar(50) | YES  |     | NULL    |       |
+| amount | float       | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into sales_status values
+    -> (1,"grocery",null),
+    -> (2,"home appliances",null),
+    -> (3,"amount",null);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from sales_status;
++------+-----------------+--------+
+| sno  | field           | amount |
++------+-----------------+--------+
+|    1 | grocery         |   NULL |
+|    2 | home appliances |   NULL |
+|    3 | amount          |   NULL |
++------+-----------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from production;
++------+-----------------+----------+
+| sno  | field           | amount   |
++------+-----------------+----------+
+|    1 | grocery         |   876000 |
+|    2 | home appliances | 32780000 |
+|    3 | clothing        |  1254000 |
++------+-----------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from sales;
++------+-----------------+---------+
+| sno  | field           | amount  |
++------+-----------------+---------+
+|    1 | grocery         | 1056300 |
+|    2 | home appliances | 3845300 |
+|    3 | amount          | 1834000 |
++------+-----------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> update sales_status set amount=(select amount from sales where sno=1)-(select amount from production where sno=1) where sno=1;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>  update sales_status set amount=(select amount from sales where sno=2)-(select amount from production where sno=2) where sno=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>  update sales_status set amount=(select amount from sales where sno=3)-(select amount from production where sno=3) where sno=3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from sales_status;
++------+-----------------+-----------+
+| sno  | field           | amount    |
++------+-----------------+-----------+
+|    1 | grocery         |    180300 |
+|    2 | home appliances | -28934700 |
+|    3 | amount          |    580000 |
++------+-----------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select sum(amount) as total_profit from sales_status;
++--------------+
+| total_profit |
++--------------+
+|    -28174400 |
++--------------+
+1 row in set (0.01 sec)
+
+mysql> select max(amount) as max_profit from sales_status;
++------------+
+| max_profit |
++------------+
+|     580000 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select * from sales_status where amount=(select max(amount) as max_profit from sales_status);
++------+--------+--------+
+| sno  | field  | amount |
++------+--------+--------+
+|    3 | amount | 580000 |
++------+--------+--------+
+1 row in set (0.01 sec)
+
+mysql> select min(amount) as min_profit from sales_status;
++------------+
+| min_profit |
++------------+
+|  -28934700 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select * from sales_status where amount=(select min(amount) as min_profit from sales_status);
++------+-----------------+-----------+
+| sno  | field           | amount    |
++------+-----------------+-----------+
+|    2 | home appliances | -28934700 |
++------+-----------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select avg(amount) from sales_status;
++--------------------+
+| avg(amount)        |
++--------------------+
+| -9391466.666666666 |
++--------------------+
+1 row in set (0.00 sec)
