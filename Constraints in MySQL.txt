@@ -1,0 +1,422 @@
+Constraints in MySQL:
+=======================
+
+   Constraints are the keys which are used to regulate the data at the time of entry level.
+
+   The main objective of any database is to maintain the data without the duplicates,it can be achieved by using constraints.
+
+   These are the various constraints used in MySQL:
+1.Not Null
+2.Unique
+3.Check
+4.Default
+5.Primary key
+6.Foreign Key
+7.Surrogate key
+8.Composite key
+
+
+1.Not Null:
+    Not null is used to insert atleast any value instead of Null or Empty in the table.
+
+Column_name Datatype Not Null
+
+Ex:
+===
+mysql> create database constrains;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> use constrains;
+Database changed
+mysql> create table not_null_table
+    -> (sno int not null,
+    -> name varchar(50) not null,
+    -> salary float not null);
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc not_null_table;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| sno    | int         | NO   |     | NULL    |       |
+| name   | varchar(50) | NO   |     | NULL    |       |
+| salary | float       | NO   |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+mysql> insert into not_null_table values
+    -> (1,"kotesh",25000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from not_null_table;
++-----+--------+--------+
+| sno | name   | salary |
++-----+--------+--------+
+|   1 | kotesh |  25000 |
++-----+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into not_null_table values(2,"navven");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+
+
+
+2.Unique:
+========
+
+    It is used to avoid the duplicates in the table,once the record is inserted with unique,the same type of record cannot be inserted.
+
+Column_name Datatype Unique
+
+Ex1:
+mysql> create table unique_table
+    -> (sno int unique,
+    -> name varchar(50) unique,
+    -> city varchar(50) unique,
+    -> salary float unique);
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> desc unique_table;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| sno    | int         | YES  | UNI | NULL    |       |
+| name   | varchar(50) | YES  | UNI | NULL    |       |
+| city   | varchar(50) | YES  | UNI | NULL    |       |
+| salary | float       | YES  | UNI | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> insert into unique_table values
+    -> (1,"kotesh","ptg",25000),
+    -> (2,"naveen","pusa",30000);
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from unique_table;
++------+--------+------+--------+
+| sno  | name   | city | salary |
++------+--------+------+--------+
+|    1 | kotesh | ptg  |  25000 |
+|    2 | naveen | pusa |  30000 |
++------+--------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> insert into unique_table values(3,"nivas","pusa",40000);
+ERROR 1062 (23000): Duplicate entry 'pusa' for key 'unique_table.city'
+
+
+
+3.Check:
+    Check is used to check the given condition at the entry level only to insert the record,if the given condition is not satisfied,the record will not be inserted.
+
+     Always use atleast one operator while working with check constraint.
+
+Column_name DATATYPE Check(condition)
+
+Ex:
+====
+mysql> create table check_table
+    -> (sno int,
+    -> name varchar(50),
+    -> age int check(age>=18));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc check_table;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| sno   | int         | YES  |     | NULL    |       |
+| name  | varchar(50) | YES  |     | NULL    |       |
+| age   | int         | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> insert into check_table values
+    -> (1,"kotesh",25);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from check_table;
++------+--------+------+
+| sno  | name   | age  |
++------+--------+------+
+|    1 | kotesh |   25 |
++------+--------+------+
+1 row in set (0.00 sec)
+
+mysql> insert into check_table values
+    -> (1,"kotesh",15);
+ERROR 3819 (HY000): Check constraint 'check_table_chk_1' is violated.
+
+
+Note:
+=====
+create table students(
+Pin INT Not Null,
+Name VARCHAR(50) Not Null,
+State VARCHAR(50) CHECK(State IN ("Andhra Pradesh","Telengana","Kerala"));
+
+
+
+4.Default:
+    Default constraint is used to occupy the default value if any value is not mentioned during the insertion,Default value can be occupied with Null value.
+
+   Default value must be declared at the time of table creation.
+
+Column_name Datatype Default("Value")
+
+Ex:
+====
+mysql> use constrains;
+Database changed
+mysql> create table default_table
+    -> (sno int not null,
+    -> state varchar(50) unique,
+    -> capital varchar(50) default("not mentioned"));
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> desc default_table;
++---------+-------------+------+-----+-------------------------+-------------------+
+| Field   | Type        | Null | Key | Default                 | Extra             |
++---------+-------------+------+-----+-------------------------+-------------------+
+| sno     | int         | NO   |     | NULL                    |                   |
+| state   | varchar(50) | YES  | UNI | NULL                    |                   |
+| capital | varchar(50) | YES  |     | _cp850\'not mentioned\' | DEFAULT_GENERATED |
++---------+-------------+------+-----+-------------------------+-------------------+
+3 rows in set (0.01 sec)
+
+mysql> insert into default_table values
+    -> (1,"andhra","guntur"),
+    -> (2,"telegana","hyderabad");
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from default_table;
++-----+----------+-----------+
+| sno | state    | capital   |
++-----+----------+-----------+
+|   1 | andhra   | guntur    |
+|   2 | telegana | hyderabad |
++-----+----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> insert into default_table (sno,state) values (3,"goa");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from default_table;
++-----+----------+---------------+
+| sno | state    | capital       |
++-----+----------+---------------+
+|   1 | andhra   | guntur        |
+|   2 | telegana | hyderabad     |
+|   3 | goa      | not mentioned |
++-----+----------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into default_table (sno,state) values (4,"kerala");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from default_table;
++-----+----------+---------------+
+| sno | state    | capital       |
++-----+----------+---------------+
+|   1 | andhra   | guntur        |
+|   2 | telegana | hyderabad     |
+|   3 | goa      | not mentioned |
+|   4 | kerala   | not mentioned |
++-----+----------+---------------+
+4 rows in set (0.00 sec)
+
+
+5.Primary key:
+===============
+
+    Primary key is the combination of not null and unique key which means the column must not be Null and it doesnt allows duplicates.
+
+   Insertion,updation,deletion is performed only with primary key after its declaration.
+
+   To establish the relationship between the tables ,primary key plays keyrole.
+
+Primary Key = Not Null + Unique 
+
+Column_name Datatype Primary Key
+
+
+Ex:
+===
+mysql> create table primary_table
+    -> (sno int primary key,
+    -> name varchar(50) not null,
+    -> age int check(age>18),
+    -> state varchar(50) not null);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc primary_table;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| sno   | int         | NO   | PRI | NULL    |       |
+| name  | varchar(50) | NO   |     | NULL    |       |
+| age   | int         | YES  |     | NULL    |       |
+| state | varchar(50) | NO   |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into primary_table values
+    -> (1,"kotesh",24,"andhra"),
+    -> (2,"naveen",19,"telagana"),(3,"nivas",26,"goa");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> insert into primary_table values
+    -> (5001,"kotesh",24,"andhra"),
+    -> (5002,"naveen",33,"up");
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from primary_table;
++------+--------+------+----------+
+| sno  | name   | age  | state    |
++------+--------+------+----------+
+|    1 | kotesh |   24 | andhra   |
+|    2 | naveen |   19 | telagana |
+|    3 | nivas  |   26 | goa      |
+| 5001 | kotesh |   24 | andhra   |
+| 5002 | naveen |   33 | up       |
++------+--------+------+----------+
+5 rows in set (0.00 sec)
+
+mysql> insert into primary_table values (1,"nivas",66,"ap");
+ERROR 1062 (23000): Duplicate entry '1' for key 'primary_table.PRIMARY'
+
+
+6.Foreign Key:
+        The first and foremost rule to use the Foreign key is ,it must be Primary key in the previous table.
+
+      Foreign key is used to establish the relationship between the tables with common references among the tables.
+
+     The operations on foreign key table will influence on the primary key table.
+
+Foreign Key(column_name) references table_name(primary key column_name)
+
+Ex:
+====
+mysql> create table foregin_table
+    -> (id int primary key,
+    -> salary float not null,
+    -> foreign key(id) references primary_table(sno));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc foregin_table;
++--------+-------+------+-----+---------+-------+
+| Field  | Type  | Null | Key | Default | Extra |
++--------+-------+------+-----+---------+-------+
+| id     | int   | NO   | PRI | NULL    |       |
+| salary | float | NO   |     | NULL    |       |
++--------+-------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> insert into foregin_table values
+    -> (1,23000),
+    -> (2,33000),
+    -> (3,40000),
+    -> (5001,35000),
+    -> (5002,36000);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from foregin_table;
++------+--------+
+| id   | salary |
++------+--------+
+|    1 |  23000 |
+|    2 |  33000 |
+|    3 |  40000 |
+| 5001 |  35000 |
+| 5002 |  36000 |
++------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from primary_table;
++------+--------+------+----------+
+| sno  | name   | age  | state    |
++------+--------+------+----------+
+|    1 | kotesh |   24 | andhra   |
+|    2 | naveen |   19 | telagana |
+|    3 | nivas  |   26 | goa      |
+| 5001 | kotesh |   24 | andhra   |
+| 5002 | naveen |   33 | up       |
++------+--------+------+----------+
+5 rows in set (0.01 sec)
+
+mysql> insert into primary_table values (5003,"ravi",34,"prakasam");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from primary_table;
++------+--------+------+----------+
+| sno  | name   | age  | state    |
++------+--------+------+----------+
+|    1 | kotesh |   24 | andhra   |
+|    2 | naveen |   19 | telagana |
+|    3 | nivas  |   26 | goa      |
+| 5001 | kotesh |   24 | andhra   |
+| 5002 | naveen |   33 | up       |
+| 5003 | ravi   |   34 | prakasam |
++------+--------+------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from foregin_table;
++------+--------+
+| id   | salary |
++------+--------+
+|    1 |  23000 |
+|    2 |  33000 |
+|    3 |  40000 |
+| 5001 |  35000 |
+| 5002 |  36000 |
++------+--------+
+5 rows in set (0.00 sec)
+
+mysql> insert into foregin_table values (5003,67000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from foregin_table;
++------+--------+
+| id   | salary |
++------+--------+
+|    1 |  23000 |
+|    2 |  33000 |
+|    3 |  40000 |
+| 5001 |  35000 |
+| 5002 |  36000 |
+| 5003 |  67000 |
++------+--------+
+6 rows in set (0.00 sec)
+
+
+mysql> insert into foregin_table values (5004,67000);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`constrains`.`foregin_table`, CONSTRAINT `foregin_table_ibfk_1` FOREIGN KEY (`id`) REFERENCES `primary_table` (`sno`))
+mysql> delete from primary_table where sno=1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`constrains`.`foregin_table`, CONSTRAINT `foregin_table_ibfk_1` FOREIGN KEY (`id`) REFERENCES `primary_table` (`sno`))
+
+
+
+Note:
+======
+
+1.Cannot insert or update in child key table(foreign key table)
+2.Cannot delete record from parent key table(primary key table)
+
+
+7.Surrogate key:
+    Surrogate key is also known as substitute key,if any constraint of the column is changed to another constraint,then it is termed as surrogate key.
+
+    Modify command is used to change the constraint of the column.
+
+unique ----> default
+not null ----> check
+
+
+8.Composite key:
+
+    The combination of two primary keys of two tables is known as composite key,it cannot be handled practically but work on for reference purpose.
