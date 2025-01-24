@@ -1,0 +1,582 @@
+Clauses in MySQL:
+===================
+
+   Clauses are used to retrieve the records from the table as per the given condition.Clauses are used to retrive,filter and also to arrange the data in ascending or descending order.
+
+   These are the various clauses which are involved in MySQL:
+a)where clause
+b)group by clause
+c)order by clause
+d)having clause
+
+a)where clause:
+     where clause is used to retrieve the records as per the given condition,the condition may be any operator or followed by any other rule.
+
+select * from table_name WHERE column_name=value;
+
+select column_name from table_name WHERE column_name=value;
+
+select column1,column2 from table_name WHERE column_name=value;
+
+
+Examples on where clause:
+===========================
+
+mysql> use aggregates;
+Database changed
+mysql> show tables;
++----------------------+
+| Tables_in_aggregates |
++----------------------+
+| aggregates           |
+| cricket_players      |
+| student_marks        |
++----------------------+
+3 rows in set (0.01 sec)
+
+mysql> select * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |       85.5 |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |    61.3333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+5 rows in set (0.01 sec)
+
+Ex:1
+====
+
+mysql> select * from student_marks where sno=3;
++------+-------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name  | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+-------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    3 | nivas |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
++------+-------+--------+-------+-------+---------+---------+--------+-------------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from student_marks where sno=2 and maths=66;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from student_marks where sno=2 or maths=55;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student_marks where sno%2=0;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student_marks where sno%2=1;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |       85.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |    61.3333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student_marks where sno in (2,4,3,5,1);
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |       85.5 |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |    61.3333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from student_marks where name like "n%";
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+2 rows in set (0.00 sec)
+
+Ex:2
+====
+mysql> select maths from student_marks where sno=2;
++-------+
+| maths |
++-------+
+|    66 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select * from student_marks where maths=(select maths from student_marks where sno=2);
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+1 row in set (0.00 sec)
+
+Ex:3
+====
+
+mysql> select maths,english from student_marks where sno=3;
++-------+---------+
+| maths | english |
++-------+---------+
+|    55 |      74 |
++-------+---------+
+
+
+b)group by clause:
+   group  by clause is used to filter the records as per the given condition,
+it is always better to use aggregates while working with group by clause.
+
+   It is very prominent clause which will influence the other clauses like order by and having clause.
+
+
+select column_name,aggregate(column_name) from table_name group by column_name;
+
+
+Examples on group by clause:
+=============================
+Ex:1:
+=====
+mysql> select * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |       85.5 |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |    61.3333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select name,count(*) from student_marks group by name;
++--------+----------+
+| name   | count(*) |
++--------+----------+
+| kotesh |        1 |
+| naveen |        1 |
+| nivas  |        1 |
+| raju   |        1 |
+| ram    |        1 |
++--------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select first_name,count(*) as total_items from cricket_players group by first_name;
++------------+-------------+
+| first_name | total_items |
++------------+-------------+
+| virat      |           1 |
+| david      |           1 |
+| kane       |           1 |
+| ab         |           1 |
+| rohit      |           1 |
+| ms         |           1 |
+| rusab      |           1 |
++------------+-------------+
+7 rows in set (0.00 sec)
+
+Ex:2
+=====
+mysql> select name,max(maths) from student_marks group by name;
++--------+------------+
+| name   | max(maths) |
++--------+------------+
+| kotesh |         87 |
+| naveen |         66 |
+| nivas  |         55 |
+| raju   |         55 |
+| ram    |         52 |
++--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select name,min(maths) from student_marks group by name;
++--------+------------+
+| name   | min(maths) |
++--------+------------+
+| kotesh |         87 |
+| naveen |         66 |
+| nivas  |         55 |
+| raju   |         55 |
+| ram    |         52 |
++--------+------------+
+5 rows in set (0.00 sec)
+
+
+c)order by clause:
+==================
+
+   order by clause is used to arrange the data in ascending or descending order followed by group by clause.
+
+   order by clause can be used to arrange in alphabetical or numerical,aggregated columns can also be used for order by clause.
+
+   Using group by clause is not mandatory in some conditions while working with order  by clause.
+
+   If any order is not mentioned,then MySQL engine will by default arranges the data in ascending order.
+
+
+select column,aggregate(column) from table_name GROUP BY column_name ORDER BY Column_name ASC|DESC ;
+
+
+Here ASC means ascending order
+     DESC means descending order
+
+
+Examples on order by clause:
+==============================
+Ex:1:
+=====
+mysql> select * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |       85.5 |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |    61.3333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select name,count(*) from student_marks group by name order by name asc;
++--------+----------+
+| name   | count(*) |
++--------+----------+
+| kotesh |        1 |
+| naveen |        1 |
+| nivas  |        1 |
+| raju   |        1 |
+| ram    |        1 |
++--------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select name,count(*) from student_marks group by name order by name desc;
++--------+----------+
+| name   | count(*) |
++--------+----------+
+| ram    |        1 |
+| raju   |        1 |
+| nivas  |        1 |
+| naveen |        1 |
+| kotesh |        1 |
++--------+----------+
+5 rows in set (0.00 sec)
+
+
+Ex:2:
+=====
+mysql> select name,count(*) from student_marks group by name order by count(*);
++--------+----------+
+| name   | count(*) |
++--------+----------+
+| kotesh |        1 |
+| naveen |        1 |
+| nivas  |        1 |
+| raju   |        1 |
+| ram    |        1 |
++--------+----------+
+5 rows in set (0.01 sec)
+
+mysql> select name,count(*) from student_marks group by name order by count(*) desc;
++--------+----------+
+| name   | count(*) |
++--------+----------+
+| kotesh |        1 |
+| naveen |        1 |
+| nivas  |        1 |
+| raju   |        1 |
+| ram    |        1 |
++--------+----------+
+5 rows in set (0.00 sec)
+
+
+
+To retrieve the 2nd,3rd,4th, nth maximum or minimum records from the table using order by clause:
+==================================================================================================
+
+DISTINCT:
+
+      DISTINCT keyword used to avoid the duplicate values from the table.
+
+LIMIT:
+
+    LIMIT is used to apply the limitation for the given condition to retrieve nth maximum or minimim record.
+
+   OFFSET and Count are used within the limit to retrieve the nth max() or min() record.
+
+   There are is no need to use any aggregates to find the maximum or minimum record.
+
+
+OFFSET:
+    Offset is used to skip the number of records from the given table
+
+Count:
+    Count is used to count the next record which are previously skipped by using OFFSET.
+
+
+*select DISTINCT column_name from table_name ORDER BY column_name ASC|DESC LIMIT  OFFSET,Count;
+
+To find 2nd maximum record,
+
+select DISTINCT column_name from table_name ORDER BY column_name DESC LIMIT 1,1;
+
+
+To find 3rd maximum record,
+
+select DISTINCT column_name from table_name ORDER BY Column_name DESC LIMIT 2,1;
+
+
+To find 4th maximum record,
+
+select DISTINCT column_name from table_name ORDER BY Column_name DESC LIMIT 3,1;
+
+
+To find nth maximum record,
+
+select DISTINCT column_name from table_name ORDER BY COLUMN_NAME DESC LIMIT n-1,1;
+
+
+
+62nd maximum record,
+
+select DISTINCT column_name from table_name ORDER BY Column_name DESC LIMIT 61,1;
+
+
+Examples on DISTINCT & LIMIT:
+===============================
+To find 2nd,3rd,4th maximum record,
+
+select DISTINCT column_name from table_name ORDER BY column_name DESC LIMIT 1,1;
+
+Ex:1
+====
+mysql> select  * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |       85.5 |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |    61.3333 |
+|    6 | kotesh |     55 |    66 |    88 |      25 |      56 |     85 |         375 |       62.5 |
+|    7 | naveen |     85 |    65 |    52 |      54 |      88 |     45 |         389 |    64.8333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+7 rows in set (0.01 sec)
+
+mysql> select distinct total_marks from student_marks order by total_marks desc limit 1,1;
++-------------+
+| total_marks |
++-------------+
+|         450 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select distinct total_marks from student_marks order by total_marks desc limit 2,1;
++-------------+
+| total_marks |
++-------------+
+|         441 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select distinct total_marks from student_marks order by total_marks desc limit 3,1;
++-------------+
+| total_marks |
++-------------+
+|         437 |
++-------------+
+1 row in set (0.00 sec)
+
+
+
+Ex2:
+====
+2nd,3rd,4th maximum complete record:
+====================================
+
+mysql> select * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |       85.5 |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |    61.3333 |
+|    6 | kotesh |     55 |    66 |    88 |      25 |      56 |     85 |         375 |       62.5 |
+|    7 | naveen |     85 |    65 |    52 |      54 |      88 |     45 |         389 |    64.8333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from student_marks where total_marks=(select distinct total_marks from student_marks order by total_marks desc limit 2,1);
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+1 row in set (0.01 sec)
+
+mysql> select * from student_marks where total_marks=(select distinct total_marks from student_marks order by total_marks desc limit 3,1);
++------+------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    4 | raju |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
++------+------+--------+-------+-------+---------+---------+--------+-------------+------------+
+1 row in set (0.01 sec)
+
+mysql> select * from student_marks where total_marks=(select distinct total_marks from student_marks order by total_marks desc limit 4,1);
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    7 | naveen |     85 |    65 |    52 |      54 |      88 |     45 |         389 |    64.8333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+1 row in set (0.00 sec)
+
+
+
+Ex3:
+=====
+3rd and 4th maximum:
+====================
+mysql> select distinct total_marks from student_marks order by total_marks desc limit 2,2;
++-------------+
+| total_marks |
++-------------+
+|         441 |
+|         437 |
++-------------+
+2 rows in set (0.00 sec)
+
+
+Note:
+
+1.It is mandatory to use GROUP BY clause whenever the records are to be arranged in ASCENDING OR DESCENDING ORDER.
+
+
+select column,aggregate(column) from table_name GROUP BY Column_name ORDER BY Column_name ASC|DESC;
+
+
+
+2.No need to use GROUP BY clause whenever the nth maximum or nth minimum records to be retrieved from the table.
+
+select DISTINCT column_name from table_name ORDER BY column_name ASC|DESC LIMIT OFFSET,COUNT;
+
+
+
+d)having clause:
+=================
+
+
+   having clause is used to retriev the aggregated records as per the given condition .
+   
+    It is always mandatory to use to GROUP BY clause in having clause or else having clause doesnt exists.
+
+select column_name,aggregate(column_name) from table_name GROUP BY column_name having aggregate(column) condition;
+
+
+Examples on having clause:
+==========================
+mysql> select * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |       85.5 |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |    61.3333 |
+|    6 | kotesh |     55 |    66 |    88 |      25 |      56 |     85 |         375 |       62.5 |
+|    7 | naveen |     85 |    65 |    52 |      54 |      88 |     45 |         389 |    64.8333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select name,max(total_marks) from student_marks group by name having max(total_marks)>500;
++--------+------------------+
+| name   | max(total_marks) |
++--------+------------------+
+| kotesh |              513 |
++--------+------------------+
+1 row in set (0.01 sec)
+
+mysql> select name,max(total_marks) from student_marks group by name having max(total_marks)<500;
++--------+------------------+
+| name   | max(total_marks) |
++--------+------------------+
+| naveen |              441 |
+| nivas  |              450 |
+| raju   |              437 |
+| ram    |              368 |
++--------+------------------+
+4 rows in set (0.00 sec)
+
+
+
+Order to write group by ,order by and having clauses:
+======================================================
+
+
+   group by  ---> having -----> order by
+
+Ex:
+====
+
+mysql> select * from student_marks;
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+| sno  | name   | telugu | hindi | maths | english | science | social | total_marks | percentage |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+|    1 | kotesh |     99 |    89 |    87 |      73 |      77 |     88 |         513 |       85.5 |
+|    2 | naveen |     77 |    88 |    66 |      82 |      71 |     57 |         441 |       73.5 |
+|    3 | nivas  |     58 |    99 |    55 |      74 |      65 |     99 |         450 |         75 |
+|    4 | raju   |     88 |    66 |    55 |      88 |      52 |     88 |         437 |    72.8333 |
+|    5 | ram    |     58 |    66 |    52 |      85 |      22 |     85 |         368 |    61.3333 |
+|    6 | kotesh |     55 |    66 |    88 |      25 |      56 |     85 |         375 |       62.5 |
+|    7 | naveen |     85 |    65 |    52 |      54 |      88 |     45 |         389 |    64.8333 |
++------+--------+--------+-------+-------+---------+---------+--------+-------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select name,max(total_marks) from student_marks group by name having max(total_marks)<500 order by name;
++--------+------------------+
+| name   | max(total_marks) |
++--------+------------------+
+| naveen |              441 |
+| nivas  |              450 |
+| raju   |              437 |
+| ram    |              368 |
++--------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> select name,max(total_marks) from student_marks group by name having max(total_marks)>400 order by name;
++--------+------------------+
+| name   | max(total_marks) |
++--------+------------------+
+| kotesh |              513 |
+| naveen |              441 |
+| nivas  |              450 |
+| raju   |              437 |
++--------+------------------+
+4 rows in set (0.00 sec)
+
+
+
+
