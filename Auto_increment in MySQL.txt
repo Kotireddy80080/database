@@ -1,0 +1,105 @@
+Auto_increment in MySQL:
+==========================
+
+    Auto_increment is an extra key which is used to insert the new values automatically into the table.
+
+   The column must be integer datatype only while using auto_increment key.
+
+column_name datatype constraint  AUTO_INCREMENT
+
+
+Ex1:
+=====
+mysql> use constrains;
+Database changed
+mysql> create table auto_increment
+    -> (pid int primary key auto_increment,
+    -> pname varchar(50) not null,
+    -> price float not null,
+    -> company varchar(50) not null);
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> desc auto_increment;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| pid     | int         | NO   | PRI | NULL    | auto_increment |
+| pname   | varchar(50) | NO   |     | NULL    |                |
+| price   | float       | NO   |     | NULL    |                |
+| company | varchar(50) | NO   |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+4 rows in set (0.03 sec)
+
+mysql> insert into auto_increment values (1,"bike",45000,"tvs");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from auto_increment;
++-----+-------+-------+---------+
+| pid | pname | price | company |
++-----+-------+-------+---------+
+|   1 | bike  | 45000 | tvs     |
++-----+-------+-------+---------+
+1 row in set (0.00 sec)
+
+mysql> insert into auto_increment (pname,price,company) values ("car",56000000,"thar");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from auto_increment;
++-----+-------+----------+---------+
+| pid | pname | price    | company |
++-----+-------+----------+---------+
+|   1 | bike  |    45000 | tvs     |
+|   2 | car   | 56000000 | thar    |
++-----+-------+----------+---------+
+2 rows in set (0.01 sec)
+
+mysql> insert into auto_increment (pname,price,company) values ("tvs_xl",450000,"tvs");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from auto_increment;
++-----+--------+----------+---------+
+| pid | pname  | price    | company |
++-----+--------+----------+---------+
+|   1 | bike   |    45000 | tvs     |
+|   2 | car    | 56000000 | thar    |
+|   3 | tvs_xl |   450000 | tvs     |
++-----+--------+----------+---------+
+3 rows in set (0.00 sec)
+
+
+
+
+Rule to create Effective table:
+=================================
+
+1.Always declare datatype while creating the column in the table.
+     Column_name Datatype
+
+2.Always use appropriate datatypes only.
+   If the column consists of numericals,use integer or float or decimal
+   If the column consists of strings,use varchar or char or text
+
+3.Declare the column name only with alphabets and dont use any special characters.
+     R@te INT    ----> Invalid 
+     Rate INT    ----> Valid
+
+4.Dont declare space between the column name,instead use underscore(_) to declare the space between the column
+   Student Name  ---> Error
+   Student_Name  ---> Valid
+
+5.Dont make unnecessary calculations over the table.
+
+6.Always use primary key while creating the table to avoid the duplicate values and to maintain data integrity.
+
+7.Always use atleast one constraint while declaring columns in the table.
+
+8.Dont use multiple constraints for a single column.
+
+9.Always use atleast one operator while using check constraints.
+
+
+
+
+
+
+
