@@ -1,0 +1,618 @@
+Joins in MySQL:
+================
+
+   Joins are used to join the tables and returns as a single entity,the main objective of joins is to reduce the data redundancy and maintain data integrity.
+
+  Instead of writing the queries multiple times to display the tables,joins helps to join the tables and returns as a single unit.
+
+   Joins are classified as follows:
+1.Inner join
+2.Outer join
+   a)Left join
+   b)Right join
+3.Full join
+
+
+1.Inner join:
+     Inner join is also known as intersection which is used to join the tables internally.
+
+    Inner join can be used to join the specific columns from the tables and returns as single entity.
+
+   Inner join can be not only used to join the tables,can also be used to join the entire tables.
+
+   The first and foremost rule for inner join is the columns must be consists of common data or else it will raises warning.
+
+
+
+Consider two tables as t1 and t2 with 5 columns and 6 columns respectively.
+     t1 ----> 5 columns
+     t2 ----> 6 columns
+
+select t1.column1,t1.column2,t1.column3,t2.column2,t2.column3,t2.column5,t2.column6 from t1 INNER JOIN t2 on t1.column1=t2.column1;  (Always use common references only)
+
+
+Examples on Inner Join:
+========================
+
+mysql> use joins;
+Database changed
+mysql> desc products;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| pid     | int         | NO   | PRI | NULL    | auto_increment |
+| pname   | varchar(50) | NO   |     | NULL    |                |
+| price   | float       | NO   |     | NULL    |                |
+| company | varchar(50) | NO   |     | NULL    |                |
+| colour  | varchar(50) | NO   |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into products values
+    -> (111,"mobile",20000,"redmi","blue"),
+    -> (112,"bike",9000000,"tvs","black"),
+    -> (113,"car",45000000,"thar","grey"),
+    -> (114,"tv",100000,"lg","cherry red"),
+    -> (115,"laptop",600000,"lenovo","white");
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from products;
++-----+--------+----------+---------+------------+
+| pid | pname  | price    | company | colour     |
++-----+--------+----------+---------+------------+
+| 111 | mobile |    20000 | redmi   | blue       |
+| 112 | bike   |  9000000 | tvs     | black      |
+| 113 | car    | 45000000 | thar    | grey       |
+| 114 | tv     |   100000 | lg      | cherry red |
+| 115 | laptop |   600000 | lenovo  | white      |
++-----+--------+----------+---------+------------+
+5 rows in set (0.01 sec)
+
+mysql> create table customers
+    -> (cid int primary key auto_increment,
+    -> cname varchar(50) not null,
+    -> age int not null,
+    -> location varchar(50) not null);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc customers;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| cid      | int         | NO   | PRI | NULL    | auto_increment |
+| cname    | varchar(50) | NO   |     | NULL    |                |
+| age      | int         | NO   |     | NULL    |                |
+| location | varchar(50) | NO   |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into customers values
+    -> (111,"kotesh",25,"ptg"),
+    -> (112,"naveen",20,"plp"),
+    -> (113,"nivas",19,"knr"),
+    -> (114,"ravi",30,"ong"),
+    -> (115,"ramu",45,"hyd");
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from customers;
++-----+--------+-----+----------+
+| cid | cname  | age | location |
++-----+--------+-----+----------+
+| 111 | kotesh |  25 | ptg      |
+| 112 | naveen |  20 | plp      |
+| 113 | nivas  |  19 | knr      |
+| 114 | ravi   |  30 | ong      |
+| 115 | ramu   |  45 | hyd      |
++-----+--------+-----+----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from products;
++-----+--------+----------+---------+------------+
+| pid | pname  | price    | company | colour     |
++-----+--------+----------+---------+------------+
+| 111 | mobile |    20000 | redmi   | blue       |
+| 112 | bike   |  9000000 | tvs     | black      |
+| 113 | car    | 45000000 | thar    | grey       |
+| 114 | tv     |   100000 | lg      | cherry red |
+| 115 | laptop |   600000 | lenovo  | white      |
++-----+--------+----------+---------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customers;
++-----+--------+-----+----------+
+| cid | cname  | age | location |
++-----+--------+-----+----------+
+| 111 | kotesh |  25 | ptg      |
+| 112 | naveen |  20 | plp      |
+| 113 | nivas  |  19 | knr      |
+| 114 | ravi   |  30 | ong      |
+| 115 | ramu   |  45 | hyd      |
++-----+--------+-----+----------+
+5 rows in set (0.00 sec)
+
+Ex:1:
+=====
+
+mysql> select products.pname,products.company,customers.cname,customers.age from products inner join customers on products.pid=customers.cid;
++--------+---------+--------+-----+
+| pname  | company | cname  | age |
++--------+---------+--------+-----+
+| mobile | redmi   | kotesh |  25 |
+| bike   | tvs     | naveen |  20 |
+| car    | thar    | nivas  |  19 |
+| tv     | lg      | ravi   |  30 |
+| laptop | lenovo  | ramu   |  45 |
++--------+---------+--------+-----+
+5 rows in set (0.00 sec)
+
+Ex:2
+=====
+
+mysql> select customers.cname,customers.age,products.pname,products.company from customers inner join products on customers.cid=products.pid;
++--------+-----+--------+---------+
+| cname  | age | pname  | company |
++--------+-----+--------+---------+
+| kotesh |  25 | mobile | redmi   |
+| naveen |  20 | bike   | tvs     |
+| nivas  |  19 | car    | thar    |
+| ravi   |  30 | tv     | lg      |
+| ramu   |  45 | laptop | lenovo  |
++--------+-----+--------+---------+
+5 rows in set (0.00 sec)
+
+Ex:3:
+=====
+
+mysql> select p.pname,p.company,c.cname,c.age from products p inner join customers c on p.pid=c.cid;
++--------+---------+--------+-----+
+| pname  | company | cname  | age |
++--------+---------+--------+-----+
+| mobile | redmi   | kotesh |  25 |
+| bike   | tvs     | naveen |  20 |
+| car    | thar    | nivas  |  19 |
+| tv     | lg      | ravi   |  30 |
+| laptop | lenovo  | ramu   |  45 |
++--------+---------+--------+-----+
+5 rows in set (0.00 sec)
+
+Ex:4:
+=====
+
+mysql> select c.cname,c.age,p.pname,p.company from customers c inner join products p on c.cid=p.pid;
++--------+-----+--------+---------+
+| cname  | age | pname  | company |
++--------+-----+--------+---------+
+| kotesh |  25 | mobile | redmi   |
+| naveen |  20 | bike   | tvs     |
+| nivas  |  19 | car    | thar    |
+| ravi   |  30 | tv     | lg      |
+| ramu   |  45 | laptop | lenovo  |
++--------+-----+--------+---------+
+5 rows in set (0.00 sec)
+
+Ex:5:
+=====
+
+mysql> select * from products inner join customers on products.pid=customers.cid;
++-----+--------+----------+---------+------------+-----+--------+-----+----------+
+| pid | pname  | price    | company | colour     | cid | cname  | age | location |
++-----+--------+----------+---------+------------+-----+--------+-----+----------+
+| 111 | mobile |    20000 | redmi   | blue       | 111 | kotesh |  25 | ptg      |
+| 112 | bike   |  9000000 | tvs     | black      | 112 | naveen |  20 | plp      |
+| 113 | car    | 45000000 | thar    | grey       | 113 | nivas  |  19 | knr      |
+| 114 | tv     |   100000 | lg      | cherry red | 114 | ravi   |  30 | ong      |
+| 115 | laptop |   600000 | lenovo  | white      | 115 | ramu   |  45 | hyd      |
++-----+--------+----------+---------+------------+-----+--------+-----+----------+
+5 rows in set (0.00 sec)
+
+Ex:6:
+=====
+
+mysql> select * from customers inner join products on customers.cid=products.pid;
++-----+--------+-----+----------+-----+--------+----------+---------+------------+
+| cid | cname  | age | location | pid | pname  | price    | company | colour     |
++-----+--------+-----+----------+-----+--------+----------+---------+------------+
+| 111 | kotesh |  25 | ptg      | 111 | mobile |    20000 | redmi   | blue       |
+| 112 | naveen |  20 | plp      | 112 | bike   |  9000000 | tvs     | black      |
+| 113 | nivas  |  19 | knr      | 113 | car    | 45000000 | thar    | grey       |
+| 114 | ravi   |  30 | ong      | 114 | tv     |   100000 | lg      | cherry red |
+| 115 | ramu   |  45 | hyd      | 115 | laptop |   600000 | lenovo  | white      |
++-----+--------+-----+----------+-----+--------+----------+---------+------------+
+5 rows in set (0.00 sec)
+
+Ex:7:
+====
+
+mysql> select * from products join customers on products.pid=customers.cid;
++-----+--------+----------+---------+------------+-----+--------+-----+----------+
+| pid | pname  | price    | company | colour     | cid | cname  | age | location |
++-----+--------+----------+---------+------------+-----+--------+-----+----------+
+| 111 | mobile |    20000 | redmi   | blue       | 111 | kotesh |  25 | ptg      |
+| 112 | bike   |  9000000 | tvs     | black      | 112 | naveen |  20 | plp      |
+| 113 | car    | 45000000 | thar    | grey       | 113 | nivas  |  19 | knr      |
+| 114 | tv     |   100000 | lg      | cherry red | 114 | ravi   |  30 | ong      |
+| 115 | laptop |   600000 | lenovo  | white      | 115 | ramu   |  45 | hyd      |
++-----+--------+----------+---------+------------+-----+--------+-----+----------+
+5 rows in set (0.00 sec)
+
+Ex:8:
+=====
+
+mysql> select * from customers join products on customers.cid=products.pid;
++-----+--------+-----+----------+-----+--------+----------+---------+------------+
+| cid | cname  | age | location | pid | pname  | price    | company | colour     |
++-----+--------+-----+----------+-----+--------+----------+---------+------------+
+| 111 | kotesh |  25 | ptg      | 111 | mobile |    20000 | redmi   | blue       |
+| 112 | naveen |  20 | plp      | 112 | bike   |  9000000 | tvs     | black      |
+| 113 | nivas  |  19 | knr      | 113 | car    | 45000000 | thar    | grey       |
+| 114 | ravi   |  30 | ong      | 114 | tv     |   100000 | lg      | cherry red |
+| 115 | ramu   |  45 | hyd      | 115 | laptop |   600000 | lenovo  | white      |
++-----+--------+-----+----------+-----+--------+----------+---------+------------+
+5 rows in set (0.00 sec)
+
+
+2.Outer Join
+     Whenever the tables are joined externally either on left or right side,then it is said to be outer join.
+
+    If the left side is executed,the right side will remains as Null
+
+  If the right side is executed,the left side will remains as Null.
+
+  While using outer join,always consider uncommon references only or else it may lead to data redundancy.
+
+   Outer joins are classified as follows:
+a)Left Join
+b)Right Join
+
+a)Left Join:
+    Whenever two tables are to be joined by using LEFT JOIN,the left table will executes and right side will remains as Null.
+
+
+Consider two tables as t1 and t2 with 4 and 3 columns respectively,
+
+select t1.column1,t1.column2,t1.column3,t2.column1,t2.column2 from 
+t1 LEFT JOIN t2 on t1.column1=t2.column3; (uncommon references)
+
+
+mysql> use joins
+Database changed
+mysql> select * from products;
++-----+--------+----------+---------+------------+
+| pid | pname  | price    | company | colour     |
++-----+--------+----------+---------+------------+
+| 111 | mobile |    20000 | redmi   | blue       |
+| 112 | bike   |  9000000 | tvs     | black      |
+| 113 | car    | 45000000 | thar    | grey       |
+| 114 | tv     |   100000 | lg      | cherry red |
+| 115 | laptop |   600000 | lenovo  | white      |
++-----+--------+----------+---------+------------+
+5 rows in set (0.04 sec)
+
+mysql> select * from customers;
++-----+--------+-----+----------+
+| cid | cname  | age | location |
++-----+--------+-----+----------+
+| 111 | kotesh |  25 | ptg      |
+| 112 | naveen |  20 | plp      |
+| 113 | nivas  |  19 | knr      |
+| 114 | ravi   |  30 | ong      |
+| 115 | ramu   |  45 | hyd      |
++-----+--------+-----+----------+
+5 rows in set (0.00 sec)
+
+Ex:1:
+====
+
+mysql> select p.pname,p.price,p.colour,c.cname,c.cid from products p left join customers c on p.pid=c.age;
++--------+----------+------------+-------+------+
+| pname  | price    | colour     | cname | cid  |
++--------+----------+------------+-------+------+
+| mobile |    20000 | blue       | NULL  | NULL |
+| bike   |  9000000 | black      | NULL  | NULL |
+| car    | 45000000 | grey       | NULL  | NULL |
+| tv     |   100000 | cherry red | NULL  | NULL |
+| laptop |   600000 | white      | NULL  | NULL |
++--------+----------+------------+-------+------+
+5 rows in set (0.02 sec)
+
+Ex:2:
+=====
+
+mysql> select * from products left join customers on products.pid=customers.age;
++-----+--------+----------+---------+------------+------+-------+------+----------+
+| pid | pname  | price    | company | colour     | cid  | cname | age  | location |
++-----+--------+----------+---------+------------+------+-------+------+----------+
+| 111 | mobile |    20000 | redmi   | blue       | NULL | NULL  | NULL | NULL     |
+| 112 | bike   |  9000000 | tvs     | black      | NULL | NULL  | NULL | NULL     |
+| 113 | car    | 45000000 | thar    | grey       | NULL | NULL  | NULL | NULL     |
+| 114 | tv     |   100000 | lg      | cherry red | NULL | NULL  | NULL | NULL     |
+| 115 | laptop |   600000 | lenovo  | white      | NULL | NULL  | NULL | NULL     |
++-----+--------+----------+---------+------------+------+-------+------+----------+
+5 rows in set (0.00 sec)
+
+Ex:3:
+=====
+
+mysql> select * from Customers C LEFT JOIN Customers P on C.Cid=P.Cname;
++-----+--------+-----+----------+------+-------+------+----------+
+| cid | cname  | age | location | cid  | cname | age  | location |
++-----+--------+-----+----------+------+-------+------+----------+
+| 111 | kotesh |  25 | ptg      | NULL | NULL  | NULL | NULL     |
+| 112 | naveen |  20 | plp      | NULL | NULL  | NULL | NULL     |
+| 113 | nivas  |  19 | knr      | NULL | NULL  | NULL | NULL     |
+| 114 | ravi   |  30 | ong      | NULL | NULL  | NULL | NULL     |
+| 115 | ramu   |  45 | hyd      | NULL | NULL  | NULL | NULL     |
++-----+--------+-----+----------+------+-------+------+----------+
+5 rows in set, 5 warnings (0.01 sec)
+
+Ex:4:
+====
+
+mysql> select * from Customers C LEFT JOIN Customers P on C.Cid=P.cid;
++-----+--------+-----+----------+------+--------+------+----------+
+| cid | cname  | age | location | cid  | cname  | age  | location |
++-----+--------+-----+----------+------+--------+------+----------+
+| 111 | kotesh |  25 | ptg      |  111 | kotesh |   25 | ptg      |
+| 112 | naveen |  20 | plp      |  112 | naveen |   20 | plp      |
+| 113 | nivas  |  19 | knr      |  113 | nivas  |   19 | knr      |
+| 114 | ravi   |  30 | ong      |  114 | ravi   |   30 | ong      |
+| 115 | ramu   |  45 | hyd      |  115 | ramu   |   45 | hyd      |
++-----+--------+-----+----------+------+--------+------+----------+
+5 rows in set (0.01 sec)
+
+
+b)Right Join:
+==============
+
+   Whenever two tables are joined with RIGHT JOIN ,then the left side will remains as Null and right side will be executed.
+
+  Always consider uncommon references while using right join.
+
+
+
+
+Consider two tables as t1 and t2 with 4 and 3 columns respectively,
+
+select t1.column1,t1.column2,t1.column3,t2.column1,t2.column2 from 
+t1 RIGHT JOIN t2 on t1.column1=t2.column3; (uncommon references)
+
+
+mysql> select * from products;
++-----+--------+----------+---------+------------+
+| pid | pname  | price    | company | colour     |
++-----+--------+----------+---------+------------+
+| 111 | mobile |    20000 | redmi   | blue       |
+| 112 | bike   |  9000000 | tvs     | black      |
+| 113 | car    | 45000000 | thar    | grey       |
+| 114 | tv     |   100000 | lg      | cherry red |
+| 115 | laptop |   600000 | lenovo  | white      |
++-----+--------+----------+---------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customers;
++-----+--------+-----+----------+
+| cid | cname  | age | location |
++-----+--------+-----+----------+
+| 111 | kotesh |  25 | ptg      |
+| 112 | naveen |  20 | plp      |
+| 113 | nivas  |  19 | knr      |
+| 114 | ravi   |  30 | ong      |
+| 115 | ramu   |  45 | hyd      |
++-----+--------+-----+----------+
+5 rows in set (0.00 sec)
+
+Ex:1:
+=====
+
+mysql> select p.pname,p.price,p.colour,c.cname,c.cid from products p right join customers c on p.pid=c.age;
++-------+-------+--------+--------+-----+
+| pname | price | colour | cname  | cid |
++-------+-------+--------+--------+-----+
+| NULL  |  NULL | NULL   | kotesh | 111 |
+| NULL  |  NULL | NULL   | naveen | 112 |
+| NULL  |  NULL | NULL   | nivas  | 113 |
+| NULL  |  NULL | NULL   | ravi   | 114 |
+| NULL  |  NULL | NULL   | ramu   | 115 |
++-------+-------+--------+--------+-----+
+5 rows in set (0.01 sec)
+
+Ex:2:
+=====
+
+mysql> select * from products right join customers on products.pid=customers.age;
++------+-------+-------+---------+--------+-----+--------+-----+----------+
+| pid  | pname | price | company | colour | cid | cname  | age | location |
++------+-------+-------+---------+--------+-----+--------+-----+----------+
+| NULL | NULL  |  NULL | NULL    | NULL   | 111 | kotesh |  25 | ptg      |
+| NULL | NULL  |  NULL | NULL    | NULL   | 112 | naveen |  20 | plp      |
+| NULL | NULL  |  NULL | NULL    | NULL   | 113 | nivas  |  19 | knr      |
+| NULL | NULL  |  NULL | NULL    | NULL   | 114 | ravi   |  30 | ong      |
+| NULL | NULL  |  NULL | NULL    | NULL   | 115 | ramu   |  45 | hyd      |
++------+-------+-------+---------+--------+-----+--------+-----+----------+
+5 rows in set (0.01 sec)
+
+Ex:3:
+====
+
+mysql> select * from products p1 right join products p2 on p1.pid=p2.pname;
++------+-------+-------+---------+--------+-----+--------+----------+---------+------------+
+| pid  | pname | price | company | colour | pid | pname  | price    | company | colour     |
++------+-------+-------+---------+--------+-----+--------+----------+---------+------------+
+| NULL | NULL  |  NULL | NULL    | NULL   | 111 | mobile |    20000 | redmi   | blue       |
+| NULL | NULL  |  NULL | NULL    | NULL   | 112 | bike   |  9000000 | tvs     | black      |
+| NULL | NULL  |  NULL | NULL    | NULL   | 113 | car    | 45000000 | thar    | grey       |
+| NULL | NULL  |  NULL | NULL    | NULL   | 114 | tv     |   100000 | lg      | cherry red |
+| NULL | NULL  |  NULL | NULL    | NULL   | 115 | laptop |   600000 | lenovo  | white      |
++------+-------+-------+---------+--------+-----+--------+----------+---------+------------+
+5 rows in set (0.01 sec)
+
+
+3.Full Join:
+    Full join is used to join the table completely.
+
+   But FULL JOIN doesn't supports in MySQL,instead use UNION with respect to LEFT JOIN and RIGHT JOIN.
+
+   While using LEFT JOIN and RIGHT JOIN with UNION,always consider common references only or else the tables may over lay each other.
+
+
+consider two tables as t1 and t2 with 6 and 5 columns,
+
+select * from t1 LEFT JOIN t2 on t1.column1=t2.column1  
+UNION
+select * from t1 RIGHT JOIN t2 on t1.column1=t2.column1;   (common references)
+
+
+mysql> select * from products;
++-----+--------+----------+---------+------------+
+| pid | pname  | price    | company | colour     |
++-----+--------+----------+---------+------------+
+| 111 | mobile |    20000 | redmi   | blue       |
+| 112 | bike   |  9000000 | tvs     | black      |
+| 113 | car    | 45000000 | thar    | grey       |
+| 114 | tv     |   100000 | lg      | cherry red |
+| 115 | laptop |   600000 | lenovo  | white      |
++-----+--------+----------+---------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customers;
++-----+--------+-----+----------+
+| cid | cname  | age | location |
++-----+--------+-----+----------+
+| 111 | kotesh |  25 | ptg      |
+| 112 | naveen |  20 | plp      |
+| 113 | nivas  |  19 | knr      |
+| 114 | ravi   |  30 | ong      |
+| 115 | ramu   |  45 | hyd      |
++-----+--------+-----+----------+
+5 rows in set (0.00 sec)
+
+
+Ex:1:
+===
+
+mysql> select * from products p left join customers c on p.pid=c.cid
+    -> union
+    -> select * from products p right join customers c on p.pid=c.cid;
++------+--------+----------+---------+------------+------+--------+------+----------+
+| pid  | pname  | price    | company | colour     | cid  | cname  | age  | location |
++------+--------+----------+---------+------------+------+--------+------+----------+
+|  111 | mobile |    20000 | redmi   | blue       |  111 | kotesh |   25 | ptg      |
+|  112 | bike   |  9000000 | tvs     | black      |  112 | naveen |   20 | plp      |
+|  113 | car    | 45000000 | thar    | grey       |  113 | nivas  |   19 | knr      |
+|  114 | tv     |   100000 | lg      | cherry red |  114 | ravi   |   30 | ong      |
+|  115 | laptop |   600000 | lenovo  | white      |  115 | ramu   |   45 | hyd      |
++------+--------+----------+---------+------------+------+--------+------+----------+
+5 rows in set (0.01 sec)
+
+Ex:2:
+=====
+
+mysql> select * from products p right join customers c on p.pid=c.cid
+    -> union
+    -> select * from products p left join customers c on p.pid=c.cid;
++------+--------+----------+---------+------------+------+--------+------+----------+
+| pid  | pname  | price    | company | colour     | cid  | cname  | age  | location |
++------+--------+----------+---------+------------+------+--------+------+----------+
+|  111 | mobile |    20000 | redmi   | blue       |  111 | kotesh |   25 | ptg      |
+|  112 | bike   |  9000000 | tvs     | black      |  112 | naveen |   20 | plp      |
+|  113 | car    | 45000000 | thar    | grey       |  113 | nivas  |   19 | knr      |
+|  114 | tv     |   100000 | lg      | cherry red |  114 | ravi   |   30 | ong      |
+|  115 | laptop |   600000 | lenovo  | white      |  115 | ramu   |   45 | hyd      |
++------+--------+----------+---------+------------+------+--------+------+----------+
+5 rows in set (0.01 sec)
+
+
+
+
+How to join 3 tables in single instance?
+
+Table1--->Products
+Table2--->Customers
+Table3--->Benifits
+
+Ex:1:
+====
+
+mysql> select * from customers;
++-----+--------+-----+----------+
+| cid | cname  | age | location |
++-----+--------+-----+----------+
+| 111 | kotesh |  25 | ptg      |
+| 112 | naveen |  20 | plp      |
+| 113 | nivas  |  19 | knr      |
+| 114 | ravi   |  30 | ong      |
+| 115 | ramu   |  45 | hyd      |
++-----+--------+-----+----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from benfits;
++-----+-------------+----------+
+| bid | additionals | warranty |
++-----+-------------+----------+
+| 111 | mobile_1    | 1_year   |
+| 112 | car_1       | 10_years |
+| 113 | bike_1      | 5_years  |
++-----+-------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customers c inner join products p on c.cid=p.pid inner join benfits b on p.pid=b.bid;
++-----+--------+-----+----------+-----+--------+----------+---------+--------+-----+-------------+----------+
+| cid | cname  | age | location | pid | pname  | price    | company | colour | bid | additionals | warranty |
++-----+--------+-----+----------+-----+--------+----------+---------+--------+-----+-------------+----------+
+| 111 | kotesh |  25 | ptg      | 111 | mobile |    20000 | redmi   | blue   | 111 | mobile_1    | 1_year   |
+| 112 | naveen |  20 | plp      | 112 | bike   |  9000000 | tvs     | black  | 112 | car_1       | 10_years |
+| 113 | nivas  |  19 | knr      | 113 | car    | 45000000 | thar    | grey   | 113 | bike_1      | 5_years  |
++-----+--------+-----+----------+-----+--------+----------+---------+--------+-----+-------------+----------+
+3 rows in set (0.01 sec)
+
+
+How to save the table after applying joins?
+===========================================
+
+Sol:
+=====
+
+mysql> select * from customers c inner join products p on c.cid=p.pid inner join benfits b on p.pid=b.bid;
++-----+--------+-----+----------+-----+--------+----------+---------+--------+-----+-------------+----------+
+| cid | cname  | age | location | pid | pname  | price    | company | colour | bid | additionals | warranty |
++-----+--------+-----+----------+-----+--------+----------+---------+--------+-----+-------------+----------+
+| 111 | kotesh |  25 | ptg      | 111 | mobile |    20000 | redmi   | blue   | 111 | mobile_1    | 1_year   |
+| 112 | naveen |  20 | plp      | 112 | bike   |  9000000 | tvs     | black  | 112 | car_1       | 10_years |
+| 113 | nivas  |  19 | knr      | 113 | car    | 45000000 | thar    | grey   | 113 | bike_1      | 5_years  |
++-----+--------+-----+----------+-----+--------+----------+---------+--------+-----+-------------+----------+
+3 rows in set (0.01 sec)
+
+mysql> create table kotesh as select * from customers c inner join products p on c.cid=p.pid inner join benfits b on p.pid=b.bid;
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> desc kotesh;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| cid         | int         | NO   |     | 0       |       |
+| cname       | varchar(50) | NO   |     | NULL    |       |
+| age         | int         | NO   |     | NULL    |       |
+| location    | varchar(50) | NO   |     | NULL    |       |
+| pid         | int         | NO   |     | 0       |       |
+| pname       | varchar(50) | NO   |     | NULL    |       |
+| price       | float       | NO   |     | NULL    |       |
+| company     | varchar(50) | NO   |     | NULL    |       |
+| colour      | varchar(50) | NO   |     | NULL    |       |
+| bid         | int         | NO   |     | 0       |       |
+| additionals | varchar(50) | NO   |     | NULL    |       |
+| warranty    | varchar(50) | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+12 rows in set (0.03 sec)
+
+mysql> select * from kotesh;
++-----+--------+-----+----------+-----+--------+----------+---------+--------+-----+-------------+----------+
+| cid | cname  | age | location | pid | pname  | price    | company | colour | bid | additionals | warranty |
++-----+--------+-----+----------+-----+--------+----------+---------+--------+-----+-------------+----------+
+| 111 | kotesh |  25 | ptg      | 111 | mobile |    20000 | redmi   | blue   | 111 | mobile_1    | 1_year   |
+| 112 | naveen |  20 | plp      | 112 | bike   |  9000000 | tvs     | black  | 112 | car_1       | 10_years |
+| 113 | nivas  |  19 | knr      | 113 | car    | 45000000 | thar    | grey   | 113 | bike_1      | 5_years  |
++-----+--------+-----+----------+-----+--------+----------+---------+--------+-----+-------------+----------+
+3 rows in set (0.00 sec)
