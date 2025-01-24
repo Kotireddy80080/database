@@ -1,0 +1,87 @@
+replace() in MySQL:
+===================
+
+   replace() is used to replace the old records to new records with respect to wildcards.
+
+  replace() is used along with update statement.
+
+replace(column_name,old_name,new_name) where column LIKE wildcard condition;
+
+
+Example:
+=======
+
+mysql> create database Replace_records;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use Replace_records;
+Database changed
+mysql> create table replace_table
+    -> (sno int primary key,
+    -> sname varchar(50) not null,
+    -> email varchar(50) not null);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc replace_table;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| sno   | int         | NO   | PRI | NULL    |       |
+| sname | varchar(50) | NO   |     | NULL    |       |
+| email | varchar(50) | NO   |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> insert into replace_table values
+    -> (11,"kotesh","kotesh123@gmail.com"),
+    -> (12,"naveen","naveen123@gmail.com"),
+    -> (13,"nivas","nivas123@gmail.com");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from replace_table;
++-----+--------+---------------------+
+| sno | sname  | email               |
++-----+--------+---------------------+
+|  11 | kotesh | kotesh123@gmail.com |
+|  12 | naveen | naveen123@gmail.com |
+|  13 | nivas  | nivas123@gmail.com  |
++-----+--------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> update replace_table set email=replace(email,"@gmail.com","@rediff.co
+m") where email like "%@gmail.com";
+Query OK, 3 rows affected (0.01 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select * from replace_table;
++-----+--------+----------------------+
+| sno | sname  | email                |
++-----+--------+----------------------+
+|  11 | kotesh | kotesh123@rediff.com |
+|  12 | naveen | naveen123@rediff.com |
+|  13 | nivas  | nivas123@rediff.com  |
++-----+--------+----------------------+
+3 rows in set (0.00 sec)
+
+
+MODIFY command in MySQL:
+=========================
+
+Modify command is used to apply the alterations for the table.
+
+Modify command is used to add or drop the PRIMARY KEY for a table.
+
+Modify command is also used to convert the one column  datatype to another datatype.
+
+Modify command is also used to add or reduce the length of the column characters.
+
+
+How to add primary key for a table?
+---> ALTER table table_name ADD Primary Key(Column_name);
+
+How to drop primary key for a table?
+---> ALTER table table_name DROP Primary Key;
+
+How to change the datatype of the column?
+---> ALTER table table_name MODIFY Column_name Datatype.
